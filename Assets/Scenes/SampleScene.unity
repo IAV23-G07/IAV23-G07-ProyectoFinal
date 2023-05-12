@@ -582,8 +582,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scale: 0.1
-  size: 200
-  waterLevel: 0.35
+  size: 175
+  waterLevel: 0.2
   terrainMaterial: {fileID: 2100000, guid: afdca951c806c814b819c32eff548ac6, type: 2}
   edgesMaterial: {fileID: 2100000, guid: 3e1a1d561fe06604dacf851c1efdb59b, type: 2}
   waterMaterial: {fileID: 0}

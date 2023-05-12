@@ -7,7 +7,7 @@ public class Grid : MonoBehaviour
 {
     public float scale = 0.1f;
     public int size = 100;
-    Cell[,] grid;
+    CellTMP[,] grid;
     MeshRenderer meshRenderer;
 
 
@@ -42,13 +42,14 @@ public class Grid : MonoBehaviour
 
 
 
-        grid = new Cell[size,size];
+        grid = new CellTMP[size,size];
         for (int y = 0; y < size; y++){
             for (int x = 0; x < size; x++){
-                Cell cell = new Cell();
+                CellTMP cell = new CellTMP();
                 float noise = noiseMap[x, y]- falloffMap[y,x];
                 cell.isWater= noise <waterLevel;
                 grid[y,x] = cell;
+                //grid[y,x].height = noise;
             }
         }
 
@@ -65,13 +66,13 @@ public class Grid : MonoBehaviour
 
         for (int y = 0; y < size; y++){ 
             for (int x = 0; x < size; x++){
-                Cell cell = grid[x, y];
+                CellTMP cell = grid[x, y];
                 if (!cell.isWater){
                     //definir los vertices de la celda
-                    Vector3 a = new Vector3(x - 0.5f,0,y + 0.5f);
-                    Vector3 b = new Vector3(x + 0.5f,0,y + 0.5f);
-                    Vector3 c = new Vector3(x - 0.5f,0,y - 0.5f);
-                    Vector3 d = new Vector3(x + 0.5f,0,y - 0.5f);
+                    Vector3 a = new Vector3(x - 0.5f,cell.height,y + 0.5f);
+                    Vector3 b = new Vector3(x + 0.5f, cell.height, y + 0.5f);
+                    Vector3 c = new Vector3(x - 0.5f, cell.height, y - 0.5f);
+                    Vector3 d = new Vector3(x + 0.5f,cell.height,y - 0.5f);
                     Vector2 uvA = new Vector2(x / (float)size, y / (float)size); //definir coordenadas de textura correspondientes a cada v
                     Vector2 uvB = new Vector2((x + 1) / (float)size, y / (float)size);
                     Vector2 uvC = new Vector2(x / (float)size, (y + 1) / (float)size);
@@ -103,7 +104,7 @@ public class Grid : MonoBehaviour
         for (int y = 0; y < size; y++){
             for (int x = 0; x < size; x++){
 
-                Cell cell = grid[x, y];
+                CellTMP cell = grid[x, y];
                 if (cell.isWater) {
                     texture.SetPixel(x, y, Color.blue);                    
                 }
@@ -124,10 +125,10 @@ public class Grid : MonoBehaviour
         List<int> triangles = new List<int>();
         for (int y = 0; y < size; y++){
             for (int x = 0; x < size; x++){
-                Cell cell = grid[x, y];
+                CellTMP cell = grid[x, y];
                 if (!cell.isWater){
                     if (x > 0){
-                        Cell left = grid[x - 1, y];//izquierda
+                        CellTMP left = grid[x - 1, y];//izquierda
                         if (left.isWater){
                             Vector3 a = new Vector3(x - .5f, 0, y + .5f);
                             Vector3 b = new Vector3(x - .5f, 0, y - .5f);
@@ -141,7 +142,7 @@ public class Grid : MonoBehaviour
                         }
                     }
                     if (x < size - 1){
-                        Cell right = grid[x + 1, y];//derecha
+                        CellTMP right = grid[x + 1, y];//derecha
                         if (right.isWater){
                             Vector3 a = new Vector3(x + .5f, 0, y - .5f);
                             Vector3 b = new Vector3(x + .5f, 0, y + .5f);
@@ -155,7 +156,7 @@ public class Grid : MonoBehaviour
                         }
                     }
                     if (y > 0){
-                        Cell down = grid[x, y - 1];//abajo
+                        CellTMP down = grid[x, y - 1];//abajo
                         if (down.isWater){
                             Vector3 a = new Vector3(x - .5f, 0, y - .5f);
                             Vector3 b = new Vector3(x + .5f, 0, y - .5f);
@@ -169,7 +170,7 @@ public class Grid : MonoBehaviour
                         }
                     }
                     if (y < size - 1){
-                        Cell up = grid[x, y + 1];//arriba
+                        CellTMP up = grid[x, y + 1];//arriba
                         if (up.isWater){
                             Vector3 a = new Vector3(x + .5f, 0, y + .5f);
                             Vector3 b = new Vector3(x - .5f, 0, y + .5f);
