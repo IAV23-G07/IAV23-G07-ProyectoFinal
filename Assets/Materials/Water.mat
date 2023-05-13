@@ -105,23 +105,23 @@ Material:
     - _BumpScale: 1
     - _CaustiCutout: 0.01
     - _CausticSpeed: 0.01
-    - _CauticTilling: 3.67
+    - _CauticTilling: 3.51
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _Depth: 2.7
-    - _DepthFalloff: 0.45
+    - _Depth: 2.77
+    - _DepthFalloff: 0.82
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FoamAmount: 0.4
-    - _FoamCutout: 0.45
-    - _FoamDepth: 0.6
-    - _FoamFalloff: -2.5
-    - _FoamShoreWidth: 0.83
-    - _FoamTilling: 50
+    - _FoamAmount: 0.79
+    - _FoamCutout: -0.1
+    - _FoamDepth: 0.1
+    - _FoamFalloff: -16.2
+    - _FoamShoreWidth: 0.73
+    - _FoamTilling: 47.9
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -137,7 +137,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _WaveIntensity: 0.2
-    - _WaveSpeed: 0.4
+    - _WaveSpeed: 0.11
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -145,7 +145,7 @@ Material:
     - _CausticColor: {r: 6.498019, g: 6.498019, b: 6.498019, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FoamColor: {r: 1, g: 1, b: 1, a: 0.39607844}
     - _FoamSpeed: {r: 0, g: 0.23, b: 0, a: 0}
     - _MainColor: {r: 0.15686275, g: 0.3372549, b: 0.7921569, a: 1}
     - _ShoreColor: {r: 0.04481131, g: 0.39797503, b: 0.5, a: 1}

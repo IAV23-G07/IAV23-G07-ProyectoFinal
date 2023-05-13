@@ -38,6 +38,9 @@ public class MapGenerator : MonoBehaviour
     float[,] noiseMap;
     float[,] fallOffMap;
     Cell[,] mapaCells;
+    private void Awake(){
+        GenerateMap();
+    }
     public void GenerateMap(){
         fallOffMap = Noise.GenerateFalloffMap(mapSize);
         noiseMap= Noise.GenerateNoiseMap(mapSize, mapSize,seed,noiseScale,octaves,persistance,lacunarity,offset);
@@ -68,7 +71,7 @@ public class MapGenerator : MonoBehaviour
             MeshGenerator.GenerateTerrainMesh(mapaCells,basee,HeightPerBlock,false);
             MeshGenerator.DrawEdges(mapaCells, Edges, HeightPerBlock, false);
             //MeshGenerator.GenerateTerrainMesh(mapaCells,seaBottom,HeightPerBlock,true);          
-            //MeshGenerator.DrawTexture(mapaCells);
+            
         }
         else if (drawMode == DrawMode.FallOff) display.DrawTextureMap(TextureGenerator.TextureFromNoiseMap(Noise.GenerateFalloffMap(mapSize)));
     }
