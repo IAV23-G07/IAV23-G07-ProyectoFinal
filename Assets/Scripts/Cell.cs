@@ -6,4 +6,5 @@ using static MapGenerator;
 public class Cell{
     public TerrainType type;
     public float noise;
+    public GameObject objectGenerated=null;
 }
