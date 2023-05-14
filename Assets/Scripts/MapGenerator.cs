@@ -2,47 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapGenerator : MonoBehaviour{
-    [System.Serializable]
-    public struct TerrainType{
-        /// <summary>
-        /// Nombre Capa De Terreno
-        /// </summary>
-        public string Layer;
-        /// <summary>
-        /// Altura
-        /// </summary>
-        public float height;
-        /// <summary>
-        /// Color de Capa
-        /// </summary>
-        public Color color;       
-    }
+public class MapGenerator : MonoBehaviour{    
+    public enum DrawMode { NoiseMap,ColorMap,FallOff,All,NoObjects};
 
-    [System.Serializable]
-    public class ObjectInMap{
-        public GameObject prefab;
-        /// <summary>
-        /// Densidad del objecto 
-        /// </summary>               
-        public float Density = 0.1f;
-        /// <summary>
-        /// El ruido generado
-        /// </summary>
-        public float NoiseScale = 0.1f;
-        /// <summary>
-        /// Capa en la que se puede generar el Objecto
-        /// </summary>
-        public string GenerationLayer;
-    }
-
-    public enum DrawMode { NoiseMap,ColorMap,FallOff};
     public DrawMode drawMode;
 
     public int mapSize;
     const int chunkSize = 50;
 
-    public float HeightPerBlock = 0.5f;
+    float HeightPerBlock = 0.5f;
 
     public float noiseScale;
     public int octaves;
@@ -58,12 +26,15 @@ public class MapGenerator : MonoBehaviour{
 
     public bool useFallOff = false;
     public bool autoUpdate = false;
-
+    bool clean = false;
     Cell[,] cellMap;
     Dictionary<Vector2, Chunk> map3D= new Dictionary<Vector2, Chunk>();
+
     private void Awake(){
+        clean = true;
         GenerateMap();
     }
+
     public void GenerateMap(){
         float[,] fallOffMap = new float[mapSize,mapSize];
         if (useFallOff) fallOffMap = Noise.GenerateFalloffMap(mapSize);
@@ -87,24 +58,37 @@ public class MapGenerator : MonoBehaviour{
                     }
                 }
             }
-        }
+        }     
+        if(clean)foreach (var chunk in map3D) { chunk.Value.delete(); }
 
         MapDisplay display = GetComponent<MapDisplay>();
         if (drawMode == DrawMode.NoiseMap) display.DrawTextureMap(TextureGenerator.TextureFromNoiseMap(noiseMap));
         else if (drawMode == DrawMode.ColorMap) { 
             display.DrawTextureMap(TextureGenerator.TextureFromColorMap(colorMap, mapSize, mapSize));
+            
+        }
+        else if(drawMode == DrawMode.All){
+            display.DrawTextureMap(TextureGenerator.TextureFromColorMap(colorMap, mapSize, mapSize));
             map3D.Clear();
             GenerarMapaPorChunks();
             ObjectsGenerator.GenerarObjectos(mapSize, chunkSize, HeightPerBlock, cellMap, map3D, objects);
         }
+        else if (drawMode == DrawMode.NoObjects)
+        {
+            display.DrawTextureMap(TextureGenerator.TextureFromColorMap(colorMap, mapSize, mapSize));
+            map3D.Clear();
+            GenerarMapaPorChunks();            
+        }
         else if (drawMode == DrawMode.FallOff) display.DrawTextureMap(TextureGenerator.TextureFromNoiseMap(Noise.GenerateFalloffMap(mapSize)));
     }
+
     private void OnValidate()
     {
         if(mapSize < 1) mapSize = 1;
         if(lacunarity<1) lacunarity=1;
         if(octaves< 0) octaves=0;
     }
+
     void GenerarMapaPorChunks(){
         int numChunks = mapSize / chunkSize;
         if (mapSize % chunkSize != 0) numChunks++;
@@ -120,41 +104,5 @@ public class MapGenerator : MonoBehaviour{
                 }
             }
         }
-    }    
-}
-public class Chunk{
-    public Vector2 posMap;
-    GameObject suelo;
-    GameObject edges;
-    public GameObject objectos;
-    public Chunk(Vector2 posMap, Cell[,] mapaCells, float HeightPerBlock,Transform parent){
-        this.posMap = posMap;
-
-        suelo = new GameObject("Suelo " + posMap);
-        edges = new GameObject("Edges " + posMap);
-        objectos = new GameObject("Objectos " + posMap);
-        setParent(parent);
-        edges.transform.SetParent(suelo.transform);
-        objectos.transform.SetParent(suelo.transform);
-
-        Material sueloMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        suelo.AddComponent<MeshFilter>();
-        suelo.AddComponent<MeshRenderer>().material=sueloMaterial;
-
-        Material edgesMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        edges.AddComponent<MeshFilter>();
-        edges.AddComponent<MeshRenderer>().material=edgesMaterial;
-
-        GenerateTerrainMesh(mapaCells, HeightPerBlock);
-
-        suelo.AddComponent<MeshCollider>();
-        edges.AddComponent<MeshCollider>();
-    }
-    public void GenerateTerrainMesh(Cell[,] mapaCells, float heightPerBlock){
-        MeshGenerator.GenerateTerrainMeshChunk(mapaCells,posMap, suelo, heightPerBlock);
-        MeshGenerator.DrawEdgesChunk(mapaCells,posMap, edges, heightPerBlock);
-    }
-    public void setParent(Transform parent){
-        suelo.transform.SetParent(parent);
     }
 }

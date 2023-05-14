@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using UnityEngine;
 using static MapGenerator;
 
@@ -15,7 +16,8 @@ public static class ObjectsGenerator {
             for (int x = 0; x < mapSize; x++){
                 if (cellMap[x, y].objectGenerated==null){// si no hay un gameObject generado anteriormente
                     Cell current = cellMap[x, y];
-                    foreach (var obj in objectsToGenerate){
+                    foreach (var obj in objectsToGenerate.OrderBy(o => o.Density))//los ordeno por orden de densidad para q sea equivalente
+                    {
                         if (obj.GenerationLayer == current.type.Layer){
                             float noiseValue = Mathf.PerlinNoise(x * obj.NoiseScale, y * obj.NoiseScale);
                             float v = Random.Range(0.0f, obj.Density);
