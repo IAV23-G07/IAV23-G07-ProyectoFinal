@@ -9,38 +9,48 @@ public class Enemy : MonoBehaviour
     Animator animator;
     NavMeshAgent agent;
     GameObject target;
+    double tiempoIdle;           // Segundos que estara en el idle seleccionado
+    double tiempoComienzoIdle;     // Segundo en el que empezo ese idle
 
     int action, //Accion aleatoria del idle
         food, //Numero de comida
         weaponLevel; //Nivel del arma
-    bool interact, attack;
+    bool interact, attack, idle;
     // Start is called before the first frame update
     void Start()
     {
         controller = GameObject.Find("Day and Night Controller").GetComponent<DayAndNightControl>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        interact = false;
-        attack = false;
+        setInteract(false);
+        idle = true;
+        setAttacking(false);
+        tiempoComienzoIdle = 0;
+        tiempoIdle = 3;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(target != null && Vector3.SqrMagnitude(transform.position - target.transform.position) < 0.7f)
+        {
+            setAnim("IsWalking", false);
+        }
+        if(idle) tiempoComienzoIdle += Time.deltaTime;
     }
     //Dejara de hacer lo que este haciendo para tumbarse y dormir
     public void Sleep()
     {
+        idle = false;
         //Quita el navMeshAgent
         //Animacion de dormir
-        animator.SetBool("IsNight", true);
+        setAnim("IsNight", true);
     }
     public void WakeUp()
     {
         //Activa el navMeshAgent
         //Animacion de levantarse
-        animator.SetBool("IsNight", false);
+        setAnim("IsNight", false);
     }
     //Comprobacion de si es de noche
     public bool IsNight()
@@ -49,27 +59,38 @@ public class Enemy : MonoBehaviour
         //Debug.Log("DIA");
         return false;
     }
-
-    public void SelecIdleAction()
+    public void Idle()
     {
-        action = Random.Range(0, 4);
+        idle = true;
+        if (tiempoComienzoIdle >= tiempoIdle)
+        {
+            SelecIdleAction();
+            tiempoComienzoIdle = 0;
+        }
+    }
+    void SelecIdleAction()
+    {
+        action = Random.Range(0, 5);
         switch (action)
         {
             //Accion de Idle normal
             case 0:
-                Cook();
-                break;
-            //Merodeo
-            case 1:
-                Merodeo();
+                animator.SetInteger("Action", 0);
                 break;
             //Bailar
+            case 1:
+                animator.SetInteger("Action", 1);
+                break;
+            //Idle2, rascarse
             case 2:
-
+                animator.SetInteger("Action", 2);
                 break;
             //Cocinar
             case 3:
-
+                Cook();
+                break;
+            case 4:
+                Merodeo();
                 break;
         }
     }
@@ -78,23 +99,36 @@ public class Enemy : MonoBehaviour
         if (food > 0)
         {
             //Animacion de cocinar
+            animator.SetInteger("Action", 3);
+            food --;   
             Debug.Log("Cocina");
         }
     }
     private void Merodeo()
     {
+        //setAnim("IsWalking", true);
         Debug.Log("Merodeo");
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        //Si el objeto se puede recoger
-        if (other.gameObject.GetComponent<Pickable>() != null)
+        //Si el objeto se puede recoger o es el jugador
+        if (other.gameObject.GetComponent<Pickable>() != null || 
+            other.gameObject.GetComponent<FirstPersonController_EXAMPLE>() != null)
         {
-            interact = true;
             target = other.gameObject;
+            setAnim("IsWalking", true);
+            setInteract(true);
+            idle = false;
         }
-
+    }
+    public bool IsAttacking()
+    {
+        return attack;
+    }
+    public void setAttacking(bool a)
+    {
+        attack = a;
     }
     public bool IsInteracting()
     {
@@ -107,16 +141,21 @@ public class Enemy : MonoBehaviour
     public void StopEnemy()
     {
         agent.isStopped = true;
+        setInteract(false);
     }
     public void Chase()
     {
-        if (interact || attack)
+        idle = false;
+        if (interact || IsAttacking())
         {
             agent.SetDestination(target.transform.position);
         }
     }
     public void pickUpFood()
     {
+        idle = false;
+        //Animacion recoger
+        setAnim("IsPicking", true);
         food++;
         Debug.Log("Comida: "+ food);
     }
@@ -126,12 +165,22 @@ public class Enemy : MonoBehaviour
     }
     public void setWeaponLevel(int level)
     {
+        setAnim("IsPicking", true);
         weaponLevel = level;
     }
-
     public void Hunt()
     {
+        idle = false;
         //Animacion de atacar
-        food += 3;
+        setAttacking(true);
+        setAnim("IsAttacking", true);
+        //Cantidad aleatoria de comida que recibira al cazar
+        int amount = Random.Range(1, 6);
+        food += amount;
+    }
+
+    public void setAnim(string name, bool action)
+    {
+        animator.SetBool(name, action);
     }
 }

@@ -26,7 +26,8 @@ public class Pickable : MonoBehaviour
         //Si colisiona con el enemigo
         if (enemy != null)
         {
-            target=enemy;
+            target = enemy; //Me guardo al enemigo
+            enemy.StopEnemy(); //Lo paro
             //Dependiento del tipo de objeto que sea hago una cosa u otra
             //Si es un animal el enemigo hace la animacion de atacar
             //Si es comida hace la animacion de recoger y avisa al enemigo de que tiene comida
@@ -38,7 +39,6 @@ public class Pickable : MonoBehaviour
                     Debug.Log("Animal Atrapado");
                     break;
                 case ObjectType.FOOD:
-                    //Debug.Log("Comida Cogida");
                     enemy.pickUpFood();
                     break;
                 case ObjectType.WEAPON:
@@ -49,14 +49,13 @@ public class Pickable : MonoBehaviour
                     }
                     break;
             }
-            enemy.StopEnemy();
-            //enemy.GetComponent<Collider>().enabled = false;
             Invoke("Deactivate", 0.7f);
         }
     }
     private void Deactivate()
     {
         target.setInteract(false);
+        target.setAnim("IsPicking", false);
         Destroy(this.gameObject);
     }
 

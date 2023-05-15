@@ -1,11 +1,32 @@
 fileFormatVersion: 2
-guid: e61a796b768afa64e96bfc7b2d9fd890
+guid: 4b676b2e8ec135b4f9f452283ba387d8
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
-      74: -623603649343465320
-    second: Scene
+      74: 4723146814002874508
+    second: Armature|Attack
+  - first:
+      74: 3981556956947427215
+    second: Armature|Cook
+  - first:
+      74: -2740961779425588932
+    second: Armature|Idle01
+  - first:
+      74: -5613601399520762725
+    second: Armature|Idle02
+  - first:
+      74: -5901449632706597463
+    second: Armature|Idle03
+  - first:
+      74: 3515170952244877179
+    second: Armature|PickUp
+  - first:
+      74: -1628232818324218992
+    second: Armature|See
+  - first:
+      74: 8349542763059015795
+    second: Armature|Walk
   externalObjects: {}
   materials:
     materialImportMode: 2
