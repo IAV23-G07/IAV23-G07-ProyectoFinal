@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using UnityEngine;
-using static MapGenerator;
 
+/// <summary>
+/// Generar Objectos en el mapa
+/// </summary>
 public static class ObjectsGenerator {
    public static void GenerarObjectos
         (int mapSize, int chunkSize,float heightPerBlock, Cell[,] cellMap, Dictionary<Vector2,Chunk> chunks, ObjectInMap[] objectsToGenerate){
@@ -14,17 +15,20 @@ public static class ObjectsGenerator {
 
         for (int y = 0; y < mapSize; y++){
             for (int x = 0; x < mapSize; x++){
-                if (cellMap[x, y].objectGenerated==null){// si no hay un gameObject generado anteriormente
+                //Si no hay un gameObject generado anteriormente
+                if (cellMap[x, y].objectGenerated==null){
                     Cell current = cellMap[x, y];
-                    foreach (var obj in objectsToGenerate.OrderBy(o => o.Density))//los ordeno por orden de densidad para q sea equivalente
-                    {
+                    //Ordeno por orden de densidad para q sea equivalente
+                    foreach (var obj in objectsToGenerate.OrderBy(o => o.Density)){
+                        float noiseValue = Mathf.PerlinNoise(x * obj.NoiseScale, y * obj.NoiseScale);                       
+                        //Si el objecto se puede generar en la capa 
                         if (obj.GenerationLayer == current.type.Layer){
-                            float noiseValue = Mathf.PerlinNoise(x * obj.NoiseScale, y * obj.NoiseScale);
+                            //Aplico un valor Random sobre la densidad para que sea mas aleatorio
                             float v = Random.Range(0.0f, obj.Density);
-                            if (noiseValue < obj.Density){
+                            if (noiseValue < v){
 
                                 Vector2 chunkPos = new Vector2(x / chunkSize, y / chunkSize);
-                                GameObject generated= GameObject.Instantiate(obj.prefab, chunks[chunkPos].objectos.transform);
+                                GameObject generated= GameObject.Instantiate(obj.prefab, chunks[chunkPos].objectsGenerated.transform);
 
                                 generated.transform.position = new Vector3(topLeftX+x, heightPerBlock * current.noise * 100, topLeftX - y);
                                 generated.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360f), 0);

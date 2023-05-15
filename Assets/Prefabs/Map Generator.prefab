@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4978430900761618633
+--- !u!1 &6860451820053147254
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4978430900761618646}
-  - component: {fileID: 4978430900761618647}
-  - component: {fileID: 4978430900761618632}
+  - component: {fileID: 6860451820053147253}
+  - component: {fileID: 6860451820053147252}
+  - component: {fileID: 6860451820053147255}
   m_Layer: 0
-  m_Name: Mapa
+  m_Name: Mapa2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4978430900761618646
+--- !u!4 &6860451820053147253
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4978430900761618633}
+  m_GameObject: {fileID: 6860451820053147254}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 45.2, y: 12.2, z: 16.6}
-  m_LocalScale: {x: 300, y: 1, z: 300}
+  m_LocalScale: {x: 100, y: 1, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4978430901260607692}
+  m_Father: {fileID: 1883569050198298598}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!33 &4978430900761618647
+--- !u!33 &6860451820053147252
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4978430900761618633}
+  m_GameObject: {fileID: 6860451820053147254}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4978430900761618632
+--- !u!23 &6860451820053147255
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4978430900761618633}
+  m_GameObject: {fileID: 6860451820053147254}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -83,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4978430901260607695
+--- !u!1 &6860451820470796917
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,9 +91,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4978430901260607692}
-  - component: {fileID: 4978430901260607693}
-  - component: {fileID: 4978430901260607694}
+  - component: {fileID: 1883569050198298598}
+  - component: {fileID: 1883569050198298599}
+  - component: {fileID: 1883569050198298596}
   m_Layer: 0
   m_Name: Map Generator
   m_TagString: Untagged
@@ -101,54 +101,43 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4978430901260607692
+--- !u!4 &1883569050198298598
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4978430901260607695}
+  m_GameObject: {fileID: 6860451820470796917}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4978430900761618646}
+  - {fileID: 6860451820053147253}
+  - {fileID: 6860451822082715028}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4978430901260607693
+--- !u!114 &1883569050198298599
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4978430901260607695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78e39666feb0668459d3602cb4e23644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textureRender: {fileID: 4978430900761618632}
---- !u!114 &4978430901260607694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4978430901260607695}
+  m_GameObject: {fileID: 6860451820470796917}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 143232d3662280b40962f365c271ba4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawMode: 3
-  mapSize: 300
+  drawMode: 1
+  gameObjectMap3D: {fileID: 6860451822082715031}
+  mapSize: 100
   noiseScale: 700
   octaves: 2
-  persistance: 0.3
-  lacunarity: 13.6
-  seed: 21
+  persistance: 0.454
+  lacunarity: 14.52
+  seed: 324
   offset: {x: 200, y: 8.12}
   regions:
   - Layer: DeepWater
@@ -193,3 +182,48 @@ MonoBehaviour:
     GenerationLayer: Rock2
   useFallOff: 1
   autoUpdate: 1
+  AutoRegenerate: 0
+--- !u!114 &1883569050198298596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6860451820470796917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e39666feb0668459d3602cb4e23644, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textureRender: {fileID: 6860451820053147255}
+--- !u!1 &6860451822082715031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6860451822082715028}
+  m_Layer: 0
+  m_Name: Mapa3D
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6860451822082715028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6860451822082715031}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1883569050198298598}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
