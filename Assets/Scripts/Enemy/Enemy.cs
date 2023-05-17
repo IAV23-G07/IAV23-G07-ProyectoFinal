@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour
         setAttacking(false);
         tiempoComienzoIdle = 0;
         tiempoIdle = 3;
+        weaponLevel = 0;
     }
 
     // Update is called once per frame
@@ -34,7 +35,9 @@ public class Enemy : MonoBehaviour
     {
         if(target != null && Vector3.SqrMagnitude(transform.position - target.transform.position) < 0.7f)
         {
-            setAnim("IsWalking", false);
+            //setAnim("IsWalking", false);
+            //agent.enabled = false;
+            StopEnemy();
         }
         if(idle) tiempoComienzoIdle += Time.deltaTime;
     }
@@ -43,6 +46,7 @@ public class Enemy : MonoBehaviour
     {
         idle = false;
         //Quita el navMeshAgent
+        agent.enabled = false;
         //Animacion de dormir
         setAnim("IsNight", true);
     }
@@ -61,7 +65,10 @@ public class Enemy : MonoBehaviour
     }
     public void Idle()
     {
+        agent.enabled = false;
         idle = true;
+        setAnim("IsAttacking", false);
+        setAnim("IsWalking", false);
         if (tiempoComienzoIdle >= tiempoIdle)
         {
             SelecIdleAction();
@@ -141,12 +148,15 @@ public class Enemy : MonoBehaviour
     public void StopEnemy()
     {
         agent.isStopped = true;
-        setInteract(false);
+        agent.enabled = false;
+        setAnim("IsWalking", false);
+        //setInteract(false);
     }
     public void Chase()
     {
         idle = false;
-        if (interact || IsAttacking())
+        agent.enabled = true;
+        if ((interact || IsAttacking()) && target!=null)
         {
             agent.SetDestination(target.transform.position);
         }
@@ -154,6 +164,7 @@ public class Enemy : MonoBehaviour
     public void pickUpFood()
     {
         idle = false;
+        agent.enabled = false;
         //Animacion recoger
         setAnim("IsPicking", true);
         food++;
@@ -165,6 +176,8 @@ public class Enemy : MonoBehaviour
     }
     public void setWeaponLevel(int level)
     {
+        setAnim("IsWalking", false);
+        agent.enabled = false;
         setAnim("IsPicking", true);
         weaponLevel = level;
     }
@@ -172,13 +185,19 @@ public class Enemy : MonoBehaviour
     {
         idle = false;
         //Animacion de atacar
-        setAttacking(true);
-        setAnim("IsAttacking", true);
+        Attack();
         //Cantidad aleatoria de comida que recibira al cazar
         int amount = Random.Range(1, 6);
         food += amount;
+        Debug.Log("Comida: " + food);
     }
-
+    public void Attack()
+    {
+        agent.enabled = false;
+        setAttacking(true);
+        setAnim("IsWalking", false);
+        setAnim("IsAttacking", true);
+    }
     public void setAnim(string name, bool action)
     {
         animator.SetBool(name, action);

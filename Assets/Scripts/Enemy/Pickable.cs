@@ -6,12 +6,16 @@ public class Pickable : MonoBehaviour
 {
     public enum ObjectType { ANIMAL, FOOD, WEAPON };
     public ObjectType myType;
-    Enemy target;
     public int level; //Nivel del arma, vale 0 si no es un arma
+
+    Enemy target;
+    Mesh myMesh;
+    Material myMaterial;
     // Start is called before the first frame update
     void Start()
     {
-        
+        myMesh = GetComponent<MeshFilter>().mesh;
+        myMaterial = GetComponent<Renderer>().material;
     }
 
     // Update is called once per frame
@@ -28,6 +32,7 @@ public class Pickable : MonoBehaviour
         {
             target = enemy; //Me guardo al enemigo
             enemy.StopEnemy(); //Lo paro
+            GetComponent<Collider>().enabled = false;
             //Dependiento del tipo de objeto que sea hago una cosa u otra
             //Si es un animal el enemigo hace la animacion de atacar
             //Si es comida hace la animacion de recoger y avisa al enemigo de que tiene comida
@@ -49,14 +54,22 @@ public class Pickable : MonoBehaviour
                     }
                     break;
             }
-            Invoke("Deactivate", 0.7f);
+            Invoke("Deactivate", 1.7f);
         }
     }
     private void Deactivate()
     {
+        if(target.IsAttacking()) target.setAttacking(false);
         target.setInteract(false);
         target.setAnim("IsPicking", false);
+        if (myType==ObjectType.WEAPON)
+        {
+            GameObject sword = GameObject.Find("Espada");
+            sword.GetComponent<MeshFilter>().mesh = myMesh;
+            sword.GetComponent<Renderer>().material = myMaterial;
+            sword.transform.localScale = Vector3.one;
+            sword.transform.localScale *= 0.01f;
+        }
         Destroy(this.gameObject);
     }
-
 }
