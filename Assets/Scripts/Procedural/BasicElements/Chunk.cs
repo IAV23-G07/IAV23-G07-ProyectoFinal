@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -52,6 +53,7 @@ public class Chunk{
     /// </summary>
     public Vector2 posMap;
 
+    GameObject chunk;
     GameObject floor;
     GameObject edges;
     public GameObject objectsGenerated;
@@ -60,14 +62,16 @@ public class Chunk{
         this.posMap = posMap;
 
         //Generamos los GameObjects
+        chunk = new GameObject("Chunk " + posMap);
         floor = new GameObject("Suelo " + posMap);
         edges = new GameObject("Edges " + posMap);
         objectsGenerated = new GameObject("Objectos " + posMap);
 
         //Establecemos la jerarquia de padres
         setParent(parent);
-        edges.transform.SetParent(floor.transform);
-        objectsGenerated.transform.SetParent(floor.transform);
+        floor.transform.SetParent(chunk.transform);
+        edges.transform.SetParent(chunk.transform);
+        objectsGenerated.transform.SetParent(chunk.transform);
 
         //Creamos los respectivos materiales para cada malla
         Material sueloMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
@@ -83,6 +87,9 @@ public class Chunk{
         
         floor.AddComponent<MeshCollider>();
         edges.AddComponent<MeshCollider>();
+
+        GameObjectUtility.SetStaticEditorFlags(floor, StaticEditorFlags.BatchingStatic);
+        GameObjectUtility.SetStaticEditorFlags(edges, StaticEditorFlags.BatchingStatic);
     }
 
     /// <summary>
@@ -94,10 +101,11 @@ public class Chunk{
     }
 
     public void setParent(Transform parent){
-        floor.transform.SetParent(parent);
+        chunk.transform.SetParent(parent);
     }
 
     public void delete(){
+        GameObject.Destroy(chunk.gameObject);
         GameObject.Destroy(edges.gameObject);
         GameObject.Destroy(objectsGenerated.gameObject);
         GameObject.Destroy(floor.gameObject);

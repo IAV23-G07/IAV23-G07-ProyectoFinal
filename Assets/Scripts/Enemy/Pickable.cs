@@ -11,27 +11,27 @@ public class Pickable : MonoBehaviour
     Enemy target;
     Mesh myMesh;
     Material myMaterial;
+    bool collide;
     // Start is called before the first frame update
     void Start()
     {
         myMesh = GetComponent<MeshFilter>().mesh;
         myMaterial = GetComponent<Renderer>().material;
+        collide = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public void OnCollisionEnter(Collision collision)
-    {
-        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-        //Si colisiona con el enemigo
-        if (enemy != null)
+        GameObject enemy = GameObject.Find("boko");
+        Vector2 enemyPos = new Vector2(enemy.transform.position.x, enemy.transform.position.z);
+        Vector2 myPos = new Vector2(transform.position.x, transform.position.z);
+        if (!collide && Vector2.SqrMagnitude(enemyPos- myPos) < 1.5f)
         {
-            target = enemy; //Me guardo al enemigo
-            enemy.StopEnemy(); //Lo paro
+            Enemy boko=enemy.GetComponent<Enemy>();
+            target = boko;
+            collide = true;
+            boko.StopEnemy(); //Lo paro
             GetComponent<Collider>().enabled = false;
             //Dependiento del tipo de objeto que sea hago una cosa u otra
             //Si es un animal el enemigo hace la animacion de atacar
@@ -40,16 +40,16 @@ public class Pickable : MonoBehaviour
             switch (myType)
             {
                 case ObjectType.ANIMAL:
-                    enemy.Hunt();
+                    boko.Hunt();
                     Debug.Log("Animal Atrapado");
                     break;
                 case ObjectType.FOOD:
-                    enemy.pickUpFood();
+                    target.pickUpFood();
                     break;
                 case ObjectType.WEAPON:
-                    if (level >= enemy.getWeaponLevel()) //Si el arma es mejor
+                    if (level >= target.getWeaponLevel()) //Si el arma es mejor
                     {
-                        enemy.setWeaponLevel(level); //Actualizo el nivel del arma del enemigo
+                        boko.setWeaponLevel(level); //Actualizo el nivel del arma del enemigo
                         Debug.Log("Arma Cogida");
                     }
                     break;

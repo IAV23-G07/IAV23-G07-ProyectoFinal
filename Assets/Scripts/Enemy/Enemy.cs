@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
     {
         idle = false;
         //Quita el navMeshAgent
-        agent.enabled = false;
+        //agent.enabled = false;
         //Animacion de dormir
         setAnim("IsNight", true);
     }
@@ -65,7 +65,7 @@ public class Enemy : MonoBehaviour
     }
     public void Idle()
     {
-        agent.enabled = false;
+        //agent.enabled = false;
         idle = true;
         setAnim("IsAttacking", false);
         setAnim("IsWalking", false);
@@ -78,6 +78,7 @@ public class Enemy : MonoBehaviour
     void SelecIdleAction()
     {
         action = Random.Range(0, 5);
+        tiempoIdle = 3;
         switch (action)
         {
             //Accion de Idle normal
@@ -113,8 +114,15 @@ public class Enemy : MonoBehaviour
     }
     private void Merodeo()
     {
-        //setAnim("IsWalking", true);
+        tiempoIdle = 10;
+        setAnim("IsWalking", true);
         Debug.Log("Merodeo");
+        //agent.enabled = true;
+        agent.isStopped = false;
+        float x = Random.Range(Random.Range(-100, -25), Random.Range(25, 100));
+        float z = Random.Range(Random.Range(-100, -25), Random.Range(25, 100));
+        Vector3 newPos=new Vector3(transform.position.x + x, transform.position.y, transform.position.z+z);
+        agent.SetDestination(newPos);
     }
 
     public void OnTriggerEnter(Collider other)
@@ -148,14 +156,14 @@ public class Enemy : MonoBehaviour
     public void StopEnemy()
     {
         agent.isStopped = true;
-        agent.enabled = false;
+        //agent.enabled = false;
         setAnim("IsWalking", false);
         //setInteract(false);
     }
     public void Chase()
     {
         idle = false;
-        agent.enabled = true;
+        //agent.enabled = true;
         if ((interact || IsAttacking()) && target!=null)
         {
             agent.SetDestination(target.transform.position);
@@ -164,7 +172,7 @@ public class Enemy : MonoBehaviour
     public void pickUpFood()
     {
         idle = false;
-        agent.enabled = false;
+        //agent.enabled = false;
         //Animacion recoger
         setAnim("IsPicking", true);
         food++;
@@ -177,7 +185,7 @@ public class Enemy : MonoBehaviour
     public void setWeaponLevel(int level)
     {
         setAnim("IsWalking", false);
-        agent.enabled = false;
+        //agent.enabled = false;
         setAnim("IsPicking", true);
         weaponLevel = level;
     }
@@ -193,7 +201,7 @@ public class Enemy : MonoBehaviour
     }
     public void Attack()
     {
-        agent.enabled = false;
+        //agent.enabled = false;
         setAttacking(true);
         setAnim("IsWalking", false);
         setAnim("IsAttacking", true);
