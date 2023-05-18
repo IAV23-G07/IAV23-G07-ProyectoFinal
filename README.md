@@ -40,9 +40,30 @@ Sera un nivel en el que la IA se instanciaran proceduralmente por el mapa proced
 ## Diseño de la solución
 
 ### Herramienta de Creacion de Mundos Procedurales
-La Herramienta constara de Varios Generadores:
-  -Noise: Es el generador de Ruidos de Perlin
+La Herramienta posee varios "elementos basicos" que facilitan la creacion del mundo:
+  Class Chunk: Un chunk es una porcion 50x50 del mapa generado, esto se debe a que unity no deja crear mas de 65,534 por ello es necesario dividir la malla del mapa en otras mas pequeñas que que todas estas juntas         conformen el mapa. De esta forma cada chunk es una porcion del mapa generado de 50*50. 
+  
+      - Un GameObject Padre con el nombre de Chunk+ posMap que contiene a la malla del suelo, bordes y un gameobject que contiene todos los objectos generados en ese chunk.
+      -PosMap representa la posicion del chunk en el mapa 
 
+
+
+La Herramienta constara de Varios Generadores:
+
+  - Noise: Es el generador de Ruidos de Perlin.Constara de dos Grandes metodos: 
+  
+      - GenerateNoiseMap(int size,int seed,float noiseScale,int octaves, float persistance, float lacunarity,Vector2 offset) que generara un ruido a partir de los parametros de entrada, 
+      devolviendo una matriz de floats con el valor de ruido generado en cada casilla.
+      
+      - GenerateFalloffMap(int size): Genera un mapa de fallOff para suavizar los bordes del terreno usando esta ecuacion para ello 
+  ![image](https://github.com/IAV23-G07/IAV23-G07-ProyectoFinal/assets/82498887/efada9ad-700b-494a-8676-2d9b27243b7f) 
+
+        Siendo b=2.2 y a=3.De esta forma simulamos una especie de isla combinando la matriz que obtenemos del falloff y la matriz de ruido obtenida en el metodo GenerateNoiseMap
+  - TextureGenerator: Es una clase para la creacion de una textura, que servira para la representacion del mapa generado. Constara de dos metodos:
+       - TextureFromColorMap(Color[] colorMap,int width,int height): crea una textura y le aplica a cada texel de la texura el valor del array color, creando asi una textura a color.
+       - TextureFromNoiseMap(float[,] noiseMap): a su misma vez que el metodo anteior este crea una textura para la representacion del mapa creado pero esta vez en blanco y negro interpolando dichos colores con el               noiseMap que contiene el noise de cada celda
+  - MeshGenerator: Es el generador de la malla en 3D, como queremos que la malla que estemos creado sea lo mas eficiente posible solo crearemos las caras visibles, pues el mapa generado esta pensado para que no se le          puedan quitar bloques,trozos, etc. Para ello se ha divido en dos partes, el suelo y los bordes.En ambos hay que definir los vertices, triangulos y coordenadas de textura. 
+        -
 ## Controles
 El movimiento es un tipico 3ºpersona, en el que el jugador se mueve con las teclas AWSD y rota la camara con el raton.
 ## Producción
