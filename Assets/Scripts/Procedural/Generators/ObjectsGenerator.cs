@@ -7,7 +7,7 @@ using UnityEngine;
 /// Generar Objectos en el mapa
 /// </summary>
 public static class ObjectsGenerator {
-   public static void GenerarObjectos
+   public static void GenerateObjects
         (int mapSize, int chunkSize,float heightPerBlock, Cell[,] cellMap, Dictionary<Vector2,Chunk> chunks, ObjectInMap[] objectsToGenerate){
 
         float topLeftX = (mapSize - 1) / -2f;

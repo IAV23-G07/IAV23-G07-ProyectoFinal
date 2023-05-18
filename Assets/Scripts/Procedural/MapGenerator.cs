@@ -104,7 +104,7 @@ public class MapGenerator : MonoBehaviour{
     /// <summary>
     /// Cuando se inicilize este componente autoregenerar el terreno
     /// </summary>
-    public bool AutoRegenerate = false;
+    public bool autoRegenerate = false;
 
     //Boleano el cual limpia el terreno cuando se actualiza el mapa(SOLO SE ACTIVA EN EJECUCION)
     bool clean = false;
@@ -118,7 +118,7 @@ public class MapGenerator : MonoBehaviour{
 
     private void Awake(){
         clean = true;
-        if(AutoRegenerate) GenerateMap();
+        if(autoRegenerate) GenerateMap();
     }
 
     private void OnValidate(){
@@ -199,29 +199,29 @@ public class MapGenerator : MonoBehaviour{
                 display.ActiveMap(true);
                 break;
             case DrawMode.NoObjects:
-                GenerarMapaPorChunks();
+                GenerateMapByChunks();
                 display.ActiveMap(false);
                 break;
             case DrawMode.Objects:               
-                GenerarMapaPorChunks();
-                ObjectsGenerator.GenerarObjectos(mapSize, chunkSize, heightPerBlock, cellMap, map3D, objects);
+                GenerateMapByChunks();
+                ObjectsGenerator.GenerateObjects(mapSize, chunkSize, heightPerBlock, cellMap, map3D, objects);
                 display.ActiveMap(false);
                 break;
             case DrawMode.NoObjectsWithDisplay:
                 display.DrawTextureMap(TextureGenerator.TextureFromColorMap(colorMap, mapSize, mapSize));
-                GenerarMapaPorChunks();
+                GenerateMapByChunks();
                 display.ActiveMap(true);
                 break;
             case DrawMode.All:
                 display.DrawTextureMap(TextureGenerator.TextureFromColorMap(colorMap, mapSize, mapSize));
-                GenerarMapaPorChunks();
-                ObjectsGenerator.GenerarObjectos(mapSize, chunkSize, heightPerBlock, cellMap, map3D, objects);
+                GenerateMapByChunks();
+                ObjectsGenerator.GenerateObjects(mapSize, chunkSize, heightPerBlock, cellMap, map3D, objects);
                 display.ActiveMap(true);
                 break;
         }                     
     }
 
-    void GenerarMapaPorChunks(){
+    void GenerateMapByChunks(){
         int numChunks = mapSize / chunkSize;
         if (mapSize % chunkSize != 0) numChunks++;
 
