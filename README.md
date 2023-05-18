@@ -36,11 +36,12 @@ tendremos varios modos de creacion:
   - All: Configuracion de ColorMap y Objects
 ### IA de comportamientos de personajes
 ### Combinacion de ambas propuestas
-
+Sera un nivel en el que la IA se instanciaran proceduralmente por el mapa procedural y realizara sus distintos comportamientos. Pudiendo el jugador observarles desde la lejania ya que si te ven iran a por el.
 ## Diseño de la solución
 
 ### Herramienta de Creacion de Mundos Procedurales
-
+La Herramienta constara de Varios Generadores:
+  -Noise: Es el generador de Ruidos de Perlin
 
 ## Controles
 El movimiento es un tipico 3ºpersona, en el que el jugador se mueve con las teclas AWSD y rota la camara con el raton.
