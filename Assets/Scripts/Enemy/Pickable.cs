@@ -44,11 +44,13 @@ public class Pickable : MonoBehaviour
                     Debug.Log("Animal Atrapado");
                     break;
                 case ObjectType.FOOD:
-                    target.pickUpFood();
+                    boko.setPicking(true);
+                    boko.pickUpFood();
                     break;
                 case ObjectType.WEAPON:
                     if (level >= target.getWeaponLevel()) //Si el arma es mejor
                     {
+                        boko.setPicking(true);
                         boko.setWeaponLevel(level); //Actualizo el nivel del arma del enemigo
                         Debug.Log("Arma Cogida");
                     }
@@ -60,8 +62,6 @@ public class Pickable : MonoBehaviour
     private void Deactivate()
     {
         if(target.IsAttacking()) target.setAttacking(false);
-        target.setInteract(false);
-        target.setAnim("IsPicking", false);
         if (myType==ObjectType.WEAPON)
         {
             GameObject sword = GameObject.Find("Espada");
@@ -70,6 +70,9 @@ public class Pickable : MonoBehaviour
             sword.transform.localScale = Vector3.one;
             sword.transform.localScale *= 0.01f;
         }
+        target.setInteract(false);
+        target.setPicking(false);
+        target.setAnim("IsPicking", false);
         Destroy(this.gameObject);
     }
 }

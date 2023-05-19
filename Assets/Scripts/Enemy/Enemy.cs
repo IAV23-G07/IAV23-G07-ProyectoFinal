@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     int action, //Accion aleatoria del idle
         food, //Numero de comida
         weaponLevel; //Nivel del arma
-    bool interact, attack, idle;
+    bool interact, attack, idle, isPicking;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +45,8 @@ public class Enemy : MonoBehaviour
     public void Sleep()
     {
         idle = false;
+        setInteract(false);
+        setAttacking(false);
         //Quita el navMeshAgent
         //agent.enabled = false;
         //Animacion de dormir
@@ -67,6 +69,7 @@ public class Enemy : MonoBehaviour
     {
         //agent.enabled = false;
         idle = true;
+        StopEnemy();
         setAnim("IsAttacking", false);
         setAnim("IsWalking", false);
         if (tiempoComienzoIdle >= tiempoIdle)
@@ -125,7 +128,7 @@ public class Enemy : MonoBehaviour
         agent.SetDestination(newPos);
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         //Si el objeto se puede recoger o es el jugador
         if (other.gameObject.GetComponent<Pickable>() != null || 
@@ -136,6 +139,14 @@ public class Enemy : MonoBehaviour
             setInteract(true);
             idle = false;
         }
+    }
+    public bool isPickingUp()
+    {
+        return isPicking;
+    }
+    public void setPicking(bool p)
+    {
+        isPicking = p;
     }
     public bool IsAttacking()
     {
@@ -166,6 +177,7 @@ public class Enemy : MonoBehaviour
         //agent.enabled = true;
         if ((interact || IsAttacking()) && target!=null)
         {
+            agent.isStopped = false;
             agent.SetDestination(target.transform.position);
         }
     }
