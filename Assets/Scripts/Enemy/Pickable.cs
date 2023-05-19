@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pickable : MonoBehaviour
 {
-    public enum ObjectType { ANIMAL, FOOD, WEAPON };
+    public enum ObjectType { ANIMAL, FOOD, WEAPON, FIRE };
     public ObjectType myType;
     public int level; //Nivel del arma, vale 0 si no es un arma
 
@@ -33,21 +33,19 @@ public class Pickable : MonoBehaviour
             collide = true;
             boko.StopEnemy(); //Lo paro
             GetComponent<Collider>().enabled = false;
+
             //Dependiento del tipo de objeto que sea hago una cosa u otra
-            //Si es un animal el enemigo hace la animacion de atacar
-            //Si es comida hace la animacion de recoger y avisa al enemigo de que tiene comida
-            //Si es un arma, si la recoge, hace la animacion de recoger
             switch (myType)
             {
-                case ObjectType.ANIMAL:
+                case ObjectType.ANIMAL: //Si es un animal el enemigo hace la animacion de atacar
                     boko.Hunt();
                     Debug.Log("Animal Atrapado");
                     break;
-                case ObjectType.FOOD:
+                case ObjectType.FOOD: //Si es comida hace la animacion de recoger y avisa al enemigo de que tiene comida
                     boko.setPicking(true);
                     boko.pickUpFood();
                     break;
-                case ObjectType.WEAPON:
+                case ObjectType.WEAPON: //Si es un arma, si la recoge, hace la animacion de recoger
                     if (level >= target.getWeaponLevel()) //Si el arma es mejor
                     {
                         boko.setPicking(true);
@@ -73,6 +71,6 @@ public class Pickable : MonoBehaviour
         target.setInteract(false);
         target.setPicking(false);
         target.setAnim("IsPicking", false);
-        Destroy(this.gameObject);
+        if(myType!=ObjectType.FIRE) Destroy(this.gameObject);
     }
 }
