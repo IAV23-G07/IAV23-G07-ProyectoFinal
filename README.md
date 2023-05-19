@@ -1,7 +1,8 @@
 # IA-ProyectoFinal
 ## Autores
-- Sara Isabel Garcia Moral (sarais02). 
+- Sara Isabel Garcia Moral (sarais02). Encargada de hacer lo comportamientos de los enemigos (ver más abajo).
 - Javier Comas de Frutos (javixxu). Encargado de la herramienta de creacion de mundos procedurales y objectos colocados proceduralmente a lo largo del mapa
+
 ## Propuesta
 
 ### Herramienta de Creacion de Mundos Procedurales
@@ -35,9 +36,13 @@ tendremos varios modos de creacion:
   - NobjectsWithDisplay: Configuracion de ColorMap y NoObjects     
   - All: Configuracion de ColorMap y Objects
 En el inspector de unity, existe un boton para generar el mapa.
+
 ### IA de comportamientos de personajes
+Este proyecto consiste en la recreacion del comportamiento lo más realista y organico posible de unos seres hostiles que habitan en un bosque. Teniendo en cuenta todo lo que encuentran a su alrededor realizaran unas acciones u otras. Si encuentran algun animal cerca lo perseguirán y cuando este cerca lo atará (accion de cazar), obteniendo al matarlo un numero aleatorio de trozos de carne. Si ve alimentos (frutas y verduras) en las inmediaciones, se acercará a ellas y las cogerá, acumulando comida. Si tiene comida y encuentra un fuego cerca cocinara, gastando la comida acumulada que tiene. Si ve algun arma clavada en el suelo, y esa arma es más poderosa que la que lleva en ese momento o si no tiene arma, la recoerá y cambiará por lo que lleva en ese momento. Si ve al jugador, le perseguirá y atacará. En este proyecto para dar más realismo habrá un ciclo de día y noche, por lo que cuando sea de noche los personajes dejarán lo que esten haciendo y se dormirán.
+ 
 ### Combinacion de ambas propuestas
-Sera un nivel en el que la IA se instanciaran proceduralmente por el mapa procedural y realizara sus distintos comportamientos. Pudiendo el jugador observarles desde la lejania ya que si te ven iran a por el.
+Sera un nivel en el que los personajes se instanciaran proceduralmente por el mapa y realizara sus distintos comportamientos. Pudiendo el jugador observarles desde la lejania ya que si te ven iran a por el.
+
 ## Diseño de la solución
 
 ### Herramienta de Creacion de Mundos Procedurales
@@ -98,15 +103,61 @@ La Herramienta constara de varios Generadores:
   - GenerateMap: Genera el mapa con los parametros establecidos
   - GenerateMapByChunks: Es llamado por el metodo anterior y es elencargado de crear los chunks o modificarlos segun sea necesario
   
+### IA de los personajes
+Los personajes contarán de dos máquinas de estados: comportamientos y animaciones. La máquina de estados de comportamientos tendrá la siguiente forma:
+```mermaid
+stateDiagram
+    [*] --> Idle
+    Idle --> Sleeping : Duerme y deja de hacer lo que esté haciendo
+    Idle --> Cook : Cocinar
+    Idle --> Interact : Ha encontrado algo
+    Cook --> Sleeping : Duerme
+    Cook --> Idle: Ya no tiene comida
+    Interact --> PickUp : Recoge un objeto (arma o comida)
+    Interact --> Sleeping : Duerme
+    Interact --> Attack : Ataca al llegar hacia su presa
+    PickUp --> Idle : Ha terminado de recoger
+    PickUp --> Sleeping : Duerme
+    Attack --> Idle
+```
+Estados:
+- Sleeping: Pasará a este estado desde cualquier otro, siempre y cuando sea de noche. En este estado simplemente realizará la animacionde dormir y no saldrá de este estado hasta que sea por la mañana.
+- Idle: pasará a este estado por defecto nada más despertarse. Tambien pasará a este estado cuando no tenga nada que hacer. En este estado realizará diversas actividades de manera aleatoria. Estas actividades son 3 animaciones de idle, un merodeo simple por la zona y cocinar, aunque solo podrá cocinar si tiene comida y un fuego cerca.
+- Cooking: pasa a este estado si la accion de cocinar es seleccionada en el estado Idle. Si ha recolectado comida y tiene un fuego cerca empezara a cocinar la comida que tiene. Cuando ya no tenga comida que cocinar saldra de este estado.
+- Interact: pasará a este estado una vez que haya detectado comida, un animal, un arma o al jugador. Una vez que entre en este estado se dirigirá al elemento que haya detectado.
+- PickUp: entrará en este estado una vez que haya detectado algo que pueda recoger, como un arma o comida y este lo suficientemente cerca como para poder cogerlo. Dependiendo del objeto que sea realizara unas animaciones y acciones distintas.
+- Attack: pasará a este estado una vez que haya divisado y acercado a un animal o a el jugador y realizará la animacion de ataque.
+
+Implementacion:
+- Los elememtos del entorno interactuables tienen un trigger bastante grande para que los personajes puedan detectarlos facilmente. Todos estos objetos tienen un script Pickable. Este script gestiona los eventos dependiendo del tipo de objeto que sea (tipos definidos por el enum ObjectType).
+- Los personajes tienen el script Enemy que gestiona los cambios de estados.
+- El cambio de estados de la maquina y el de las animaciones en su mayoría vienen determinados por booleanos.
+- Cocinar: Si tiene comida y ha visitado algun fuego, ira hacia el más cercano, y cuando este a cierta distancia ejecutará la animación de cocinar. Cada 2.5 segundos cocinara 1 pieza de la comida que haya recolectado. Cuando ya no disponga de mas piezas de comida (contador implementado en el script Enemy que tiene cada personaje) pasará a otro estado.
+
 ## Controles
-El movimiento es un tipico 3ºpersona, en el que el jugador se mueve con las teclas AWSD y rota la camara con el raton.
+El movimiento es un tipico 3º persona, en el que el jugador se mueve con las teclas AWSD y rota la camara con el raton.
+
 ## Producción
 
 Las tareas se han realizado y el esfuerzo ha sido repartido entre los autores.
 
 | Estado  |  Tarea  |  Fecha  |  Autores |
 |:-:|:--|:-:|:-:|
-
+| ✔ | Mundo procedural simple | 12-05-2023 |Javier|
+| ✔ | Terreno procedural | 12-05-2023 |Javier|
+| ✔ | Terraformacion | 12-05-2023 |Javier|
+| ✔ | Base procedural | 13-05-2023 |Javier|
+| ✔ | Generar objetos proceduralmente | 14-05-2023 |Javier|
+| ✔ | Maquina de estados y primeros comportamientos | 14-05-2023 |Sara|
+| ✔ | Refactorizacion | 14-05-2023 |Javier|
+| ✔ | Update cells | 15-05-2023 |Javier|
+| ✔ | Refactorizacion | 15-05-2023 |Javier|
+| ✔ | Animaciones con blender | 15-05-2023 |Sara|
+| ✔ | Ataque arreglado y coger armas | 17-05-2023 |Sara|
+| ✔ | Actualización del README | 18-05-2023 |Javier|
+| ✔ | Primera escena conjunta | 18-05-2023 |Ambos|
+| ✔ | Prefabs propios y arreglo de recoger | 18-05-2023 |Sara|
+| ✔ | Actualización del README | 19-05-2023 |Sara|
 
 ## Referencias
 
