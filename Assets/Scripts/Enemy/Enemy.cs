@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.PlayerSettings;
 
 public class Enemy : MonoBehaviour
 {
@@ -18,7 +19,8 @@ public class Enemy : MonoBehaviour
     int action, //Accion aleatoria del idle
         food, //Numero de comida que tiene
         weaponLevel; //Nivel del arma
-    bool interact, attack, idle, isPicking, isCooking;
+    bool interact, attack, idle, isPicking, isCooking, isWandering;
+    Vector3 newPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,17 +37,14 @@ public class Enemy : MonoBehaviour
         weaponLevel = 0;
         cookingTime = 2.5;
         iniCookingTime = 0;
+        isWandering = false;
+        newPos = Vector3.zero;
     }
     // Update is called once per frame
     void Update()
     {
-        if(target != null && Vector3.SqrMagnitude(transform.position - target.transform.position) < 0.7f)
-        {
-            //agent.enabled = false;
-            StopEnemy();
-        }
-        if (idle) tiempoComienzoIdle += Time.deltaTime;
-        if (isCooking) iniCookingTime += Time.deltaTime;
+        if (idle) tiempoComienzoIdle += Time.deltaTime; //Contador para el cambio de idle
+        if (isCooking) iniCookingTime += Time.deltaTime; //Contador para cocinar piezas de comida
     }
     //Dejara de hacer lo que este haciendo para tumbarse y dormir
     public void Sleep()
@@ -55,31 +54,31 @@ public class Enemy : MonoBehaviour
         setAttacking(false); setAnim("IsAttacking", false);
         setCooking(false);
         setPicking(false);
-        //Quita el navMeshAgent
-        //agent.enabled = false;
+        isWandering=false;
         //Animacion de dormir
         setAnim("IsNight", true);
+        agent.enabled = false;
     }
     public void WakeUp()
     {
-        //Activa el navMeshAgent
+        agent.enabled = true;
         //Animacion de levantarse
         setAnim("IsNight", false);
     }
     //Comprobacion de si es de noche
     public bool IsNight()
     {
-        if (controller.TimeOfDay() == "Midnight" || controller.TimeOfDay() == "Night") { /*Debug.Log("NOCHE");*/ return true; }
-        //Debug.Log("DIA");
-        return false;
+        if (controller.TimeOfDay() == "Midnight" || controller.TimeOfDay() == "Night") return true;
+        else return false;
     }
     public void Idle()
     {
-        //agent.enabled = false;
         idle = true;
-        StopEnemy();
+        agent.enabled = false;
         setAnim("IsAttacking", false);
         setAnim("IsWalking", false);
+        setAnim("IsPicking", false);
+        //Si ha pasado el tiempo cambio de accion
         if (tiempoComienzoIdle >= tiempoIdle)
         {
             SelecIdleAction();
@@ -88,8 +87,9 @@ public class Enemy : MonoBehaviour
     }
     void SelecIdleAction()
     {
-        action = Random.Range(0, 5);
+        action = Random.Range(0, 5); //Elijo de forma aleatoria una accion
         tiempoIdle = 3;
+        setAnim("IsWalking", false);
         switch (action)
         {
             //Accion de Idle normal
@@ -110,7 +110,7 @@ public class Enemy : MonoBehaviour
                 break;
             //Merodear
             case 4:
-                Merodeo();
+                StartMerodeo();
                 break;
         }
     }
@@ -119,22 +119,23 @@ public class Enemy : MonoBehaviour
         //Si sale la accion de cocinar, pero no hay comida o no ha encontrado un fuego busca otra cosa que hacer
         if (food > 0 && nearestFire!=null)
         {
-            isCooking = true;
-            agent.isStopped = false;
-            agent.SetDestination(nearestFire.transform.position);
-            setAnim("IsWalking", true);
+            isCooking = true; //Paso al estado Cook
+            setAnim("IsWalking", true); //Animacion de andar
+            agent.enabled = true;
+            agent.SetDestination(nearestFire.transform.position); //Destino el fuego
             Debug.Log("Cocina");
         }
         else SelecIdleAction();
     }
     public void Cook()
     {
-        if(food <= 0) isCooking = false;
+        if(food <= 0) isCooking = false; //Cuando se le acaba la comida para
         else
         {
             if (nearestFire != null && Vector3.SqrMagnitude(transform.position - nearestFire.transform.position) < 4.2f)
             {
                 StopEnemy();
+                setAnim("IsWalking", false);
                 //Animacion de cocinar
                 animator.SetInteger("Action", 3);
                 //Cocino cada ciertos segundos
@@ -142,23 +143,36 @@ public class Enemy : MonoBehaviour
                 {
                     food--;
                     Debug.Log("Comida: " + food);
-                    iniCookingTime = 0;
+                    iniCookingTime = 0; //Reseteo el timer
                 }
-                
             }
         }
     }
-    private void Merodeo()
+    public void StartMerodeo()
     {
-        tiempoIdle = 10;
-        setAnim("IsWalking", true);
-        Debug.Log("Merodeo");
-        agent.isStopped = false;
-        float x = Random.Range(Random.Range(-125, -50), Random.Range(50, 125));
-        float z = Random.Range(Random.Range(-125, -50), Random.Range(50, 125));
-        Vector3 newPos=new Vector3(transform.position.x + x, transform.position.y, transform.position.z+z);
+        agent.enabled = true;
+        //Gnero una nueva posicion aleatoria
+        float x = Random.Range(-125, 125);
+        float z = Random.Range(-125, 125);
+        newPos = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+       
+        tiempoIdle = 10; //Tiempo que estara merodeando
+        tiempoComienzoIdle = 0; //Timer
+        setAnim("IsWalking", true); //Animacion de caminar
+        //Debug.Log("Merodeo");
         Debug.Log(newPos);
-        agent.SetDestination(newPos);
+        isWandering = true; //Cambio de estado
+    }
+    public void Merodeo() //En el Update del estado Wandering
+    {
+        setAnim("IsWalking", true); //Animacion de caminar
+        //Si ha pasado el tiempo cambio de estado y reseteor el contador
+        if (tiempoComienzoIdle >= tiempoIdle ||
+            Vector2.SqrMagnitude(transform.position - newPos) < 2.8f ||
+            agent.pathStatus == NavMeshPathStatus.PathPartial || 
+            agent.pathStatus == NavMeshPathStatus.PathInvalid) { tiempoComienzoIdle = 0; isWandering = false; }
+        else
+            agent.SetDestination(newPos);
     }
     public void OnTriggerEnter(Collider other)
     {
@@ -173,8 +187,7 @@ public class Enemy : MonoBehaviour
     {
         Pickable p = other.gameObject.GetComponent<Pickable>();
         //Si el objeto se puede recoger o es el jugador
-        if ((p != null && p.myType!=Pickable.ObjectType.FIRE) || 
-            other.gameObject.GetComponent<FirstPersonController_EXAMPLE>() != null)
+        if ((p != null && p.myType!=Pickable.ObjectType.FIRE && !isPicking) /*||  other.gameObject.GetComponent<FirstPersonController_EXAMPLE>() != null*/)
         {
             target = other.gameObject;
             setAnim("IsWalking", true);
@@ -197,6 +210,7 @@ public class Enemy : MonoBehaviour
     public void setPicking(bool p)
     {
         isPicking = p;
+        setAnim("IsPicking", p);
     }
     public bool IsAttacking()
     {
@@ -205,6 +219,7 @@ public class Enemy : MonoBehaviour
     public void setAttacking(bool a)
     {
         attack = a;
+        setAnim("IsAttacking", a);
     }
     public bool IsInteracting()
     {
@@ -214,29 +229,23 @@ public class Enemy : MonoBehaviour
     {
         interact = b;
     }
-    public void StopEnemy()
+    public bool Wandering()
     {
-        agent.isStopped = true;
-        //agent.enabled = false;
-        setAnim("IsWalking", false);
-        //setInteract(false);
+        return isWandering;
     }
     public void Chase()
     {
         idle = false;
-        //agent.enabled = true;
-        if ((interact || IsAttacking()) && target!=null)
+        if (target!=null)
         {
-            agent.isStopped = false;
+            agent.enabled = true;
             agent.SetDestination(target.transform.position);
         }
     }
     public void pickUpFood()
     {
+        agent.enabled=false;
         idle = false;
-        //agent.enabled = false;
-        //Animacion recoger
-        setAnim("IsPicking", true);
         food++;
         Debug.Log("Comida: "+ food);
     }
@@ -246,13 +255,11 @@ public class Enemy : MonoBehaviour
     }
     public void setWeaponLevel(int level)
     {
-        setAnim("IsWalking", false);
-        //agent.enabled = false;
-        setAnim("IsPicking", true);
         weaponLevel = level;
     }
     public void Hunt()
     {
+        agent.enabled = false;
         idle = false;
         //Animacion de atacar
         Attack();
@@ -263,10 +270,13 @@ public class Enemy : MonoBehaviour
     }
     public void Attack()
     {
-        //agent.enabled = false;
         setAttacking(true);
         setAnim("IsWalking", false);
         setAnim("IsAttacking", true);
+    }
+    public void StopEnemy()
+    {
+        agent.enabled = false;
     }
     public void setAnim(string name, bool action)
     {

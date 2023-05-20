@@ -117,7 +117,7 @@ public class DayAndNightControl : MonoBehaviour {
 	public string TimeOfDay ()
 	{
 	string dayState = "";
-		if (currentTime > 0f && currentTime < 0.1f) {
+		if (currentTime >= 0f && currentTime < 0.1f) {
 			dayState = "Midnight";
 		}
 		if (currentTime < 0.5f && currentTime > 0.1f)
