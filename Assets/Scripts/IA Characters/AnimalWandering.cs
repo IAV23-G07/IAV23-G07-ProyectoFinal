@@ -1,55 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class AnimalWandering : MonoBehaviour
 {
-    double tiempoIdle;           // Segundos que estara en el idle seleccionado
-    double tiempoComienzoIdle;     // Segundo en el que empezo ese idle
-    Vector3 newPos;
+    double timeWandering;         //Segundos cada cuales genera una nueva posicion
+    double InitialTimeWandering;  //Timer del merodeo
+    Vector3 newPos;               //Nueva posicion generada
     NavMeshAgent agent;
     Enemy enemy;
-    // Start is called before the first frame update
+    
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        tiempoComienzoIdle = 0;
-        tiempoIdle = 8.2;
+        InitialTimeWandering = 0;
+        timeWandering = 8.2;
         newPos = Vector3.zero;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        //Si el enemigo esta cerca, y ademas le esta atacando, para
+        //Si el enemigo esta cerca, y ademas le esta atacando, para quito
         if(enemy!=null && Vector2.SqrMagnitude(transform.position - enemy.transform.position) < 2.8f && enemy.IsAttacking())
         {
             agent.enabled = false;
         }
         else
         {
-            tiempoComienzoIdle += Time.deltaTime; //Contador para el cambio de idle
-            Merodeo();
+            InitialTimeWandering += Time.deltaTime; //Contador para generar una nueva posicion
+            Wandering();
         }
     }
-    public void Merodeo()
+    public void Wandering()
     {
-        //Si ha pasado el tiempo
-        if (tiempoComienzoIdle >= tiempoIdle ||
+        //Si ha pasado el tiempo, no puede llegar o ya ha llegado se genera otra posicion
+        if (InitialTimeWandering >= timeWandering ||
             Vector2.SqrMagnitude(transform.position - newPos) < 2.8f ||
             agent.pathStatus == NavMeshPathStatus.PathPartial ||
             agent.pathStatus == NavMeshPathStatus.PathInvalid) 
         { 
-            tiempoComienzoIdle = 0;
+            InitialTimeWandering = 0;
             GenerateRandomPos();
         }
         else
             agent.SetDestination(newPos);
     }
-    private void GenerateRandomPos()
+    private void GenerateRandomPos() //Genero una nueva posicion aleatoria
     {
-        //Gnero una nueva posicion aleatoria
         float x = Random.Range(-50, 50);
         float z = Random.Range(-50, 50);
         newPos = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);

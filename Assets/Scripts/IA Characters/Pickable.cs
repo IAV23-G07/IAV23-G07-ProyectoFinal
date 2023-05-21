@@ -14,7 +14,7 @@ public class Pickable : MonoBehaviour
     GameObject enemy;
     bool collide; //Variable de control para que solo entre 1 vez 
     float time;
-    // Start is called before the first frame update
+  
     void Awake()
     {
         if (myType == ObjectType.WEAPON)
@@ -30,8 +30,7 @@ public class Pickable : MonoBehaviour
             time = 2;
         }
     }
-
-    // Update is called once per frame
+   
     void Update()
     {
         Vector2 enemyPos = new Vector2(enemy.transform.position.x, enemy.transform.position.z); //Posicion x,z del enemigo en ese momento
