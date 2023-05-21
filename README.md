@@ -38,10 +38,10 @@ tendremos varios modos de creacion:
 En el inspector de unity, existe un boton para generar el mapa.
 
 ### IA de comportamientos de personajes
-Este proyecto consiste en la recreacion del comportamiento lo más realista y organico posible de unos seres hostiles que habitan en un bosque. Teniendo en cuenta todo lo que encuentran a su alrededor realizaran unas acciones u otras. Si encuentran algun animal cerca lo perseguirán y cuando este cerca lo atará (accion de cazar), obteniendo al matarlo un numero aleatorio de trozos de carne. Si ve alimentos (frutas y verduras) en las inmediaciones, se acercará a ellas y las cogerá, acumulando comida. Si tiene comida y encuentra un fuego cerca cocinara, gastando la comida acumulada que tiene. Si ve algun arma clavada en el suelo, y esa arma es más poderosa que la que lleva en ese momento o si no tiene arma, la recoerá y cambiará por lo que lleva en ese momento. Si ve al jugador, le perseguirá y atacará. En este proyecto para dar más realismo habrá un ciclo de día y noche, por lo que cuando sea de noche los personajes dejarán lo que esten haciendo y se dormirán.
+Este proyecto consiste en la recreacion del comportamiento lo más realista y organico posible de unos seres que habitan en un bosque. Teniendo en cuenta todo lo que encuentran a su alrededor realizaran unas acciones u otras. En otras palabras, serán capaces de sobrevivir alimentandose de la comida que encuentran o cazando a animales que vean y dormiran por las noches entre otras actividades. Si encuentran algun animal cerca y tiene algun arma lo perseguirán y cuando este cerca lo atacará (cazar), obteniendo al matarlo un numero aleatorio de trozos de comida. Si ven alimentos (frutas y verduras) en las inmediaciones, se acercarán a ellas y las cogerán, acumulando comida. Si tienen comida y han encontrado un fuego, iran al mas cercano para cocinar, gastando toda la comida acumulada que tienen, a no ser que se queden dormidos en el proceso. Si ven algun arma clavada en el suelo, y esa arma es más poderosa que la que llevan en ese momento, o si no tienen arma, la recoerá y cambiará por lo que lleva en ese momento, en cambio si el arma que ven es inferior, la ignorarán. En este proyecto para dar más realismo habrá un ciclo de día y noche, por lo que cuando sea de noche los personajes dejarán lo que esten haciendo y se dormirán. Todo esto se podra ver desde un punto de vista de primera persona.
  
 ### Combinacion de ambas propuestas
-Sera un nivel en el que los personajes se instanciaran proceduralmente por el mapa y realizara sus distintos comportamientos. Pudiendo el jugador observarles desde la lejania ya que si te ven iran a por el.
+Sera un nivel en el que los personajes se instanciaran proceduralmente por el mapa junto a los dintintos elementos con los que puede interactuar (tambien generados proceduralmete) y realizara sus distintos comportamientos dependiendo de lo que tengan a su alrededor. Pudiendo ser observados gracias a un controlador en 1ª persona.
 
 ## Diseño de la solución
 
@@ -111,31 +111,53 @@ stateDiagram
     Idle --> Sleeping : Duerme y deja de hacer lo que esté haciendo
     Idle --> Cook : Cocinar
     Idle --> Interact : Ha encontrado algo
+    Idle --> Wandering : Merodeo
     Cook --> Sleeping : Duerme
     Cook --> Idle: Ya no tiene comida
     Interact --> PickUp : Recoge un objeto (arma o comida)
     Interact --> Sleeping : Duerme
     Interact --> Attack : Ataca al llegar hacia su presa
+    Interact --> Idle : No le interesa lo que ha visto
     PickUp --> Idle : Ha terminado de recoger
     PickUp --> Sleeping : Duerme
+    PickUp --> Interact : Encuentra algo
     Attack --> Idle
+    Sleeping --> Idle
+    Wandering --> Sleeping : Duerme
+    Wandering --> Idle : Acaba de merodear
+    Wandering --> Interact : Ve algo mientras merodea
 ```
 Estados:
-- Sleeping: Pasará a este estado desde cualquier otro, siempre y cuando sea de noche. En este estado simplemente realizará la animacionde dormir y no saldrá de este estado hasta que sea por la mañana.
-- Idle: pasará a este estado por defecto nada más despertarse. Tambien pasará a este estado cuando no tenga nada que hacer. En este estado realizará diversas actividades de manera aleatoria. Estas actividades son 3 animaciones de idle, un merodeo simple por la zona y cocinar, aunque solo podrá cocinar si tiene comida y un fuego cerca.
-- Cooking: pasa a este estado si la accion de cocinar es seleccionada en el estado Idle. Si ha recolectado comida y tiene un fuego cerca empezara a cocinar la comida que tiene. Cuando ya no tenga comida que cocinar saldra de este estado.
-- Interact: pasará a este estado una vez que haya detectado comida, un animal, un arma o al jugador. Una vez que entre en este estado se dirigirá al elemento que haya detectado.
-- PickUp: entrará en este estado una vez que haya detectado algo que pueda recoger, como un arma o comida y este lo suficientemente cerca como para poder cogerlo. Dependiendo del objeto que sea realizara unas animaciones y acciones distintas.
-- Attack: pasará a este estado una vez que haya divisado y acercado a un animal o a el jugador y realizará la animacion de ataque.
+- Sleeping: Pasará a este estado desde cualquier otro, siempre y cuando sea de noche. En este estado simplemente realizará la animacionde dormir y no saldrá de este estado hasta que sea por la mañana. Se desactiva el NavMeshAgent ya que no debe moverse y se desactivan todas los booleanos que controlan el paso de animaciones, activando solo la de dormir. Al salir de este estado se vuelve a activar el NavMeshAgent pero se desactiva la animacion de dormir.
+- Idle: pasará a este estado por defecto nada más despertarse. Tambien pasará a este estado cuando no tenga nada que hacer. En este estado realizará diversas actividades de manera aleatoria. Estas actividades son 3 animaciones de idle, un merodeo simple por la zona y cocinar. Al entrar a este estado se desactivará el NavMeshAgent ya que debe estar estatico. Tambien desactivara todas las animaciones no relacionadas con el idle. Cada 3 segundos se cambiara de accion con un contador. Para la seleccion de accion se generará un numero aleatorio en el rango (0,4), siendo el numero 0 para una accion de idle generica, el 1 para bailar, el 2 para rascarse, el 3 para cocinar, y el 4 para merodear. Las tres primeras simplemente activan su animacion correspondiente y el NavMeshAgent. Para cocinar debe asegurarse que se cumplen las condiciones de haber visitado un fuego y de tener piezas de comida. Si no se cumplen se fuerza a generar otra accion de forma aleatoria. Si se cumplen, se activara la animacion de andar, se fijará como destino el fuego mas cercano y se pasará al estado de Cook. Para la accion de merodear se activara la animacion de caminar y el NavMeshAgent. Tambien se generará una posicion aleatoria que se guardara en una variable y se cambiará al estado de Wandering.
+- Cook: pasa a este estado si la accion de cocinar es seleccionada en el estado Idle. Si ha recolectado comida y tiene un fuego cerca empezara a cocinar la comida que tiene, es decir, cada 2.5 segundos su contador de comida decrementará en 1. Cuando ya no tenga comida que cocinar saldra de este estado. Se desactivara el NavMeshAgent ya que debe estar estaico, al igual que la animacion de caminar, y se activara la animacion de cocinar.
+- Interact: pasará a este estado una vez que haya detectado comida, un animal, un arma o al jugador. Una vez que entre en este estado se dirigirá al elemento que haya detectado. Al entrar a este estado se activará la animacion de caminar. Se activará el NavMeshAgent y se fijará como destino el objeto que haya sido detectado por el trigger en ese momento.
+- PickUp: entrará en este estado una vez que haya detectado algo que pueda recoger, como un arma o comida y este lo suficientemente cerca como para poder cogerlo. Nada mas entrar se desactivara la animacion de camina y el NavMeshAgent y se activara la animacion de recoger.
+- Attack: pasará a este estado una vez que haya divisado y acercado a un animal. Se desactivara su NavMeshAgent y la animacion de andar y se activara la animacionde atacar. Además se generará un numero aleatorio de comida en el rando (1,6) que adquirirá.
+- Wandering: es el merodeo, pasa a este estado cuando se selecciona de forma aleatoria su accion en Idle. Al entrar se activa el NavMeshAgent y la animacion de caminar. Si han pasado los 10 segundos asignados a esta accion, si ha llegado a su destino o si el destino es inalcanzable, se sale de este estado.
+
+La maquina de animaciones será de esta forma:
+![image](https://github.com/IAV23-G07/IAV23-G07-ProyectoFinal/assets/82498555/d4d990f4-38ef-43ad-9da6-02db916e0aa1)
+
+Los cambios entre animaciones estaran determinados por la combinacion de 5 variables, 4 booleanos y 1 int:
+- IsWalking: para caminar
+- IsPicking: para recoger objetos del suelo
+- IsAttacking: para atacar
+- IsNight: para dormir si es de noche
+- Action: 0 para el idle, 1 para bailar, 2 para rascarse y 3 para cocinar
+
 
 Implementacion:
-- Los elememtos del entorno interactuables tienen un trigger bastante grande para que los personajes puedan detectarlos facilmente. Todos estos objetos tienen un script Pickable. Este script gestiona los eventos dependiendo del tipo de objeto que sea (tipos definidos por el enum ObjectType).
-- Los personajes tienen el script Enemy que gestiona los cambios de estados.
+- Los elememtos del entorno interactuables tienen un trigger bastante grande para que los personajes puedan detectarlos facilmente. Todos estos objetos tienen un script Pickable. Este script gestiona los eventos dependiendo del tipo de objeto que sea (tipos definidos por el enum ObjectType). En el caso de que el tipo de objeto sea un arma se guarda su material y malla. Compruba si el enemigo esta lo suficientemente cerca, y si cumple esta condicion deja de perseguir y: si es un animal y el enemigo tiene arma pasa al estado de atacar; si es comida, pasa al estado de recoger; si es un arma de mayor nivel que la suya pasa al estado de recoger tambien. Una vez realizadas estas acciones los objetos se destruirany  si es un arma, ademas se cambia la malla y el material para hacer el intercambio.
+- Cuando el personaje se encuentra a cierta distancia (pequeña) de un objeto, se sale del estado Interacting que se encarga de la persecucion y su NavMeshAgent se desactiva para que este quieto.
+- Los personajes tienen el script Enemy que gestiona los cambios de estados y todos su comportamientos.
+- Los animales tiene el script AnimalWandering que simplemente hace que merodeen generando cada 8.2 segundos una nueva posicion. Si el enemigo esta cerca y los esta atacanso paran de merodear.
 - El cambio de estados de la maquina y el de las animaciones en su mayoría vienen determinados por booleanos.
 - Cocinar: Si tiene comida y ha visitado algun fuego, ira hacia el más cercano, y cuando este a cierta distancia ejecutará la animación de cocinar. Cada 2.5 segundos cocinara 1 pieza de la comida que haya recolectado. Cuando ya no disponga de mas piezas de comida (contador implementado en el script Enemy que tiene cada personaje) pasará a otro estado.
+- A las armas se les podrá asignar un nivel, siendo este mayor que 0. Cualquier objeto que tenga nivel 0 no se considerará arma. El personaje al detectar un arma e ir a por ella, si su nivel es inferior al que tiene el arma que maneja actualmente ignorará a esta y se desactivará su trigger para que no la vuelva a tener en cuenta.
 
 ## Controles
-El movimiento es un tipico 3º persona, en el que el jugador se mueve con las teclas AWSD y rota la camara con el raton.
+El movimiento es el clasico de ordenador, en el que el jugador se mueve con las teclas AWSD y rota la camara con el raton.
 
 ## Producción
 
@@ -158,10 +180,19 @@ Las tareas se han realizado y el esfuerzo ha sido repartido entre los autores.
 | ✔ | Primera escena conjunta | 18-05-2023 |Ambos|
 | ✔ | Prefabs propios y arreglo de recoger | 18-05-2023 |Sara|
 | ✔ | Actualización del README | 19-05-2023 |Sara|
+| ✔ | Accion de cocinar | 20-05-2023 |Sara|
+| ✔ | Refactorizacion | 20-05-2023 |Sara|
+| ✔ | Comportamiento de animales | 21-05-2023 |Sara|
+| ✔ | Prefabs | 21-05-2023 |Sara|
+| ✔ | Actualización del README | 22-05-2023 |Sara|
+| ✔ | Refactorizacion | 22-05-2023 |Sara|
 
 ## Referencias
-
-Los recursos de terceros utilizados son de uso público.
+Los recursos de terceros utilizados son de uso público:
+- Animales: https://assetstore.unity.com/packages/3d/characters/animals/5-animated-voxel-animals-145754
+- Comida: https://assetstore.unity.com/packages/3d/props/food/root-vegetables-set-93392 y https://assetstore.unity.com/packages/3d/props/food/low-poly-fruit-pickups-98135
+- Armas: https://assetstore.unity.com/packages/3d/props/weapons/free-low-poly-swords-rpg-weapons-198166
+- Fuego: https://assetstore.unity.com/packages/vfx/particles/fire-explosions/low-poly-fire-244190
 
 - *AI for Games*, Ian Millington
 - API Unity
