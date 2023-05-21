@@ -152,14 +152,13 @@ public class Enemy : MonoBehaviour
     {
         agent.enabled = true;
         //Gnero una nueva posicion aleatoria
-        float x = Random.Range(-125, 125);
-        float z = Random.Range(-125, 125);
+        float x = Random.Range(-75, 75);
+        float z = Random.Range(-75, 75);
         newPos = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
        
         tiempoIdle = 10; //Tiempo que estara merodeando
         tiempoComienzoIdle = 0; //Timer
         setAnim("IsWalking", true); //Animacion de caminar
-        //Debug.Log("Merodeo");
         Debug.Log(newPos);
         isWandering = true; //Cambio de estado
     }
