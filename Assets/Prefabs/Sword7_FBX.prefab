@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5455692563033797383}
   - component: {fileID: 5671397819623003887}
   - component: {fileID: 6570287250552146491}
+  - component: {fileID: 1478390413821736995}
   m_Layer: 0
   m_Name: Sword7_FBX
   m_TagString: Untagged
@@ -112,3 +113,26 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 25, y: 4, z: 25}
   m_Center: {x: -0.0007416606, y: 0.6486705, z: -0.00021986663}
+--- !u!205 &1478390413821736995
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5815975654854824658}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.09733844, y: 2.4927113, z: -0.10189223}
+  m_Size: 4.984917
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.20098308
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 0}
+  - screenRelativeHeight: 0.045200285
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 0}
+  m_Enabled: 1
