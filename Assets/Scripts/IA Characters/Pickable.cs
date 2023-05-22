@@ -30,20 +30,44 @@ public class Pickable : MonoBehaviour
             time = 2;
         }
     }
-   
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (enemy != null) return;
+        if(other.GetComponent<Enemy>()!=null)
+        {
+            enemy = other.gameObject;
+        }
+    }
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<Enemy>() != null)
+        {
+            enemy = null;
+        }
+    }
+    public GameObject getTarget()
+    {
+        return enemy;
+    }
+    
     void Update()
     {
+        if(enemy==null) return;
         Vector2 enemyPos = new Vector2(enemy.transform.position.x, enemy.transform.position.z); //Posicion x,z del enemigo en ese momento
         Vector2 myPos = new Vector2(transform.position.x, transform.position.z);                //Mi posicion x,z en ese momento
         //Si esta lo suficientemente cerca del enemigo y no es un fuego
-        if (!collide && myType!=ObjectType.FIRE && Vector2.SqrMagnitude(enemyPos - myPos) < 2.8f)
+        //Debug.Log(Vector2.SqrMagnitude(enemyPos - myPos));
+        if (!collide && myType != ObjectType.FIRE && Vector2.SqrMagnitude(enemyPos - myPos) < 4.5f)
         {
+            //Debug.Log("mk,mjdfgkmdfbkgjkrtj");
             target = enemy.GetComponent<Enemy>(); //Me guardo el componente
+            if (target.IsNight()) return;
             collide = true; //Variable de control
             target.setAnim("IsWalking", false);
             target.setInteract(false); //Me salgo del estado de Interactuar
             target.StopEnemy();
-           
+
             //Dependiento del tipo de objeto que sea hago una cosa u otra
             switch (myType)
             {
@@ -83,7 +107,7 @@ public class Pickable : MonoBehaviour
         if (target.IsAttacking()) target.setAttacking(false);
         if (myType==ObjectType.WEAPON && level >= target.getWeaponLevel())
         {
-            GameObject sword = GameObject.Find("Espada");
+            GameObject sword = target.GetComponentInChildren<MeshFilter>().gameObject;
             sword.GetComponent<MeshFilter>().mesh = myMesh;
             sword.GetComponent<Renderer>().material = myMaterial;
             sword.transform.localScale = Vector3.one;

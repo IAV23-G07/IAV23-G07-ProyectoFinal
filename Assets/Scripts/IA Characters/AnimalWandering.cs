@@ -9,7 +9,7 @@ public class AnimalWandering : MonoBehaviour
     NavMeshAgent agent;
     Enemy enemy;
     
-    void Start()
+    void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         InitialTimeWandering = 0;
@@ -20,7 +20,7 @@ public class AnimalWandering : MonoBehaviour
     void Update()
     {
         //Si el enemigo esta cerca, y ademas le esta atacando, para quito
-        if(enemy!=null && Vector2.SqrMagnitude(transform.position - enemy.transform.position) < 2.8f && enemy.IsAttacking())
+        if(enemy!=null && Vector2.SqrMagnitude(transform.position - enemy.transform.position) < 4.5f && enemy.IsAttacking())
         {
             agent.enabled = false;
         }

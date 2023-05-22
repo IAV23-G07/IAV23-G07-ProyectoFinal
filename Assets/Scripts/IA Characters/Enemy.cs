@@ -28,8 +28,9 @@ public class Enemy : MonoBehaviour
         isWandering; //Estado wandering
 
     Vector3 newPos; //Nueva posicion del merodeo
+    Vector3 lastPos;
     //Inicio todas las variables
-    void Start()
+    void Awake()
     {
         controller = GameObject.Find("Day and Night Controller").GetComponent<DayAndNightControl>();
         animator = GetComponent<Animator>();
@@ -46,6 +47,7 @@ public class Enemy : MonoBehaviour
         iniCookingTime = 0;
         isWandering = false;
         newPos = Vector3.zero;
+        lastPos = Vector3.zero;
     }
 
     void Update()
@@ -69,6 +71,7 @@ public class Enemy : MonoBehaviour
     }
     public void WakeUp() //Salir del estado Sleeping
     {
+        if (agent == null) { Debug.Log("2gfgdfg"); agent= GetComponent<NavMeshAgent>(); }
         agent.enabled = true;
         //Animacion de levantarse
         setAnim("IsNight", false);
@@ -139,16 +142,15 @@ public class Enemy : MonoBehaviour
     public void StartMerodeo() //Accion de merodear sin pasar de estado
     {
         agent.enabled = true;
-        //Gnero una nueva posicion aleatoria
-        float x = Random.Range(-75, 75);
-        float z = Random.Range(-75, 75);
-        newPos = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+        //Genero una nueva posicion aleatoria
+        GenerateRandomPos();
        
         tiempoIdle = 10; //Tiempo que estara merodeando
         tiempoComienzoIdle = 0; //Timer
         setAnim("IsWalking", true); //Animacion de caminar
         //Debug.Log(newPos);
         isWandering = true; //Cambio de estado
+        lastPos=transform.position;
     }
 
     //COOK
@@ -186,19 +188,39 @@ public class Enemy : MonoBehaviour
     public void Merodeo() //En el Update del estado Wandering
     {
         setAnim("IsWalking", true); //Animacion de caminar
-        //Si ha pasado el tiempo cambio de estado y reseteor el contador
+        //Si ha pasado el tiempo cambio de estado y reseteo el contador
         if (tiempoComienzoIdle >= tiempoIdle ||
-            Vector2.SqrMagnitude(transform.position - newPos) < 2.8f ||
-            agent.pathStatus == NavMeshPathStatus.PathPartial || 
-            agent.pathStatus == NavMeshPathStatus.PathInvalid) { tiempoComienzoIdle = 0; isWandering = false; }
+            Vector2.SqrMagnitude(transform.position - newPos) < 10f ||
+            !CheckIfCanReachDestination()) { tiempoComienzoIdle = 0; isWandering = false; }
         else
             agent.SetDestination(newPos);
+
+        if(lastPos==transform.position) GenerateRandomPos();
+        else lastPos=transform.position;
+    }
+    private bool CheckIfCanReachDestination()
+    {
+        NavMeshPath path = new NavMeshPath();
+
+        // Calcula la ruta hacia el destino
+        if (agent.enabled && agent.CalculatePath(newPos, path))
+        {
+            // Verifica si la ruta es válida
+            return path.status == NavMeshPathStatus.PathComplete;
+        }
+
+        return false;
     }
     public bool Wandering()
     {
         return isWandering;
     }
-
+    private void GenerateRandomPos()
+    {
+        float x = Random.Range(-75, 75);
+        float z = Random.Range(-75, 75);
+        newPos = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+    }
 
     public void OnTriggerEnter(Collider other) //Para guardarme el el fuego mas cercano
     {
@@ -212,9 +234,11 @@ public class Enemy : MonoBehaviour
     }
     public void OnTriggerStay(Collider other) //Deteccion constante de los objetos de alrededor
     {
+        if (IsNight()) return;
         Pickable p = other.gameObject.GetComponent<Pickable>();
         //Si esta persiguiendo a un bicho y no tiene arma no entra
         if (p.myType == Pickable.ObjectType.ANIMAL && getWeaponLevel() == 0) return;
+        if (p.getTarget() != null && p.getTarget() != this.gameObject) return;
         //Si el objeto se puede recoger o es el jugador
         if ((p != null && p.myType!=Pickable.ObjectType.FIRE && !isPicking && !IsAttacking()))
         {
