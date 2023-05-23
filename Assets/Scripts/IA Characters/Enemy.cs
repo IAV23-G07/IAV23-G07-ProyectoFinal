@@ -141,13 +141,14 @@ public class Enemy : MonoBehaviour
     } //Accion de cocinar sin pasar de estado
     public void StartMerodeo() //Accion de merodear sin pasar de estado
     {
+        Debug.Log("Merodear");
         agent.enabled = true;
         //Genero una nueva posicion aleatoria
         GenerateRandomPos();
        
         tiempoIdle = 10; //Tiempo que estara merodeando
         tiempoComienzoIdle = 0; //Timer
-        setAnim("IsWalking", true); //Animacion de caminar
+        //setAnim("IsWalking", true); //Animacion de caminar
         //Debug.Log(newPos);
         isWandering = true; //Cambio de estado
         lastPos=transform.position;
@@ -195,8 +196,8 @@ public class Enemy : MonoBehaviour
         else
             agent.SetDestination(newPos);
 
-        if(lastPos==transform.position) GenerateRandomPos();
-        else lastPos=transform.position;
+        if (lastPos == transform.position) GenerateRandomPos();
+        else lastPos = transform.position;
     }
     private bool CheckIfCanReachDestination()
     {
@@ -258,7 +259,13 @@ public class Enemy : MonoBehaviour
         {
             agent.enabled = true;
             agent.SetDestination(target.transform.position);
+            if (lastPos == transform.position) setInteract(false);
+            else lastPos = transform.position;
         }
+    }
+    public void StartChasing()
+    {
+        lastPos = transform.position;
     }
     public bool IsInteracting()
     {
@@ -327,5 +334,9 @@ public class Enemy : MonoBehaviour
     public void setAnim(string name, bool action) //Establecer una animacion
     {
         animator.SetBool(name, action);
+    }
+    public void setIdleAnim()
+    {
+        animator.SetInteger("Action", 0);
     }
 }
