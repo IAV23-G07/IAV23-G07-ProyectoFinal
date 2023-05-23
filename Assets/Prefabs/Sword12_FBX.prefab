@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2291905396547605652}
   - component: {fileID: 2596461323544506852}
   - component: {fileID: 175327728354269637}
+  - component: {fileID: 7586235664443006373}
   m_Layer: 0
   m_Name: Sword12_FBX
   m_TagString: Untagged
@@ -111,4 +112,17 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 25, y: 1.4, z: 25}
+  m_Center: {x: -0.00000011175871, y: 0.6251225, z: 0}
+--- !u!65 &7586235664443006373
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346363345213519169}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7, y: 1.6999956, z: 0.54}
   m_Center: {x: -0.00000011175871, y: 0.6251225, z: 0}

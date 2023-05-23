@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1121649881537016316}
   - component: {fileID: 1140731660250890686}
   - component: {fileID: 1140731660250890687}
+  - component: {fileID: 3081603268919614868}
   m_Layer: 0
   m_Name: Beet
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134988108014117642}
   m_LocalRotation: {x: 0.6720833, y: 0.13402627, z: -0.1255711, w: 0.71733737}
-  m_LocalPosition: {x: -0.49612427, y: 0.041999046, z: 0.43575478}
+  m_LocalPosition: {x: -1.843, y: 0.384, z: 0.018}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -112,6 +113,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 25, y: 25, z: 4}
   m_Center: {x: -0.0017168066, y: 0.15788041, z: -0.003938116}
+--- !u!65 &3081603268919614868
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134988108014117642}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.58, y: 0.66, z: 0.39}
+  m_Center: {x: -0.0017168066, y: 0.15788041, z: -0.003938116}
 --- !u!1 &3051726497100441907
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,6 +139,7 @@ GameObject:
   - component: {fileID: 3555896902811519206}
   - component: {fileID: 1915389272892478272}
   - component: {fileID: 6302857026374029747}
+  - component: {fileID: 8048387119152486191}
   m_Layer: 0
   m_Name: Peach
   m_TagString: Untagged
@@ -140,7 +155,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3051726497100441907}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.21312428, y: 0, z: 1.5257549}
+  m_LocalPosition: {x: -0.788, y: 0.26, z: 2.145}
   m_LocalScale: {x: 0.69765913, y: 0.69765913, z: 0.69765913}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -224,6 +239,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 25, y: 4, z: 25}
   m_Center: {x: 0.041552186, y: 0.19728622, z: -0.00000010430813}
+--- !u!65 &8048387119152486191
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3051726497100441907}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.92, y: 0.83, z: 0.79}
+  m_Center: {x: 0.041552182, y: 0.1972862, z: 0.0000037103891}
 --- !u!1 &5087604790769105596
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,6 +265,7 @@ GameObject:
   - component: {fileID: 5101081031661319508}
   - component: {fileID: 5110261363335106612}
   - component: {fileID: 5110261363335106613}
+  - component: {fileID: 5044192204227225980}
   m_Layer: 0
   m_Name: Radish
   m_TagString: Untagged
@@ -252,7 +281,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5087604790769105596}
   m_LocalRotation: {x: 0.025102312, y: 0.023820324, z: 0.7249526, w: 0.687929}
-  m_LocalPosition: {x: 0.65587616, y: 0.090999044, z: 1.0217552}
+  m_LocalPosition: {x: 0.654, y: 0.43, z: 1.227}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -336,6 +365,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4, y: 25, z: 25}
   m_Center: {x: 0.00891112, y: 0.17905748, z: 0.0063418564}
+--- !u!65 &5044192204227225980
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5087604790769105596}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.47, y: 0.8, z: 0.68}
+  m_Center: {x: 0.00891112, y: 0.17905748, z: 0.0063418564}
 --- !u!1 &6540763070690794151
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,6 +391,7 @@ GameObject:
   - component: {fileID: 6526228515831273425}
   - component: {fileID: 6540763070690794149}
   - component: {fileID: 6540763070690794150}
+  - component: {fileID: 7386421890848750359}
   m_Layer: 0
   m_Name: RadishAlt
   m_TagString: Untagged
@@ -364,7 +407,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6540763070690794151}
   m_LocalRotation: {x: 0.36313215, y: 0.38506955, z: 0.5820997, w: 0.6172653}
-  m_LocalPosition: {x: 0.7938757, y: 0.029999046, z: 0.34575653}
+  m_LocalPosition: {x: 2.457, y: 0.359, z: 0.169}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -448,6 +491,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4, y: 25, z: 25}
   m_Center: {x: 0.014911447, y: 0.18978186, z: 0.0321775}
+--- !u!65 &7386421890848750359
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6540763070690794151}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.66, z: 0.58}
+  m_Center: {x: 0.014911447, y: 0.18978186, z: 0.0321775}
 --- !u!1 &6726819717203677062
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,7 +548,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6726819717203677062}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 0.28, y: 1.705, z: 0.305}

@@ -20,7 +20,7 @@ public class AnimalWandering : MonoBehaviour
     void Update()
     {
         //Si el enemigo esta cerca, y ademas le esta atacando, para quito
-        if(enemy!=null && Vector2.SqrMagnitude(transform.position - enemy.transform.position) < 4.5f && enemy.IsAttacking())
+        if(enemy!=null && Vector3.SqrMagnitude(transform.position - enemy.transform.position) < 8.2f && enemy.IsAttacking())
         {
             agent.enabled = false;
         }

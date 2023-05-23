@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEditor.PlayerSettings;
@@ -55,7 +56,6 @@ public class Enemy : MonoBehaviour
         if (idle) tiempoComienzoIdle += Time.deltaTime; //Contador para el cambio de idle
         if (isCooking) iniCookingTime += Time.deltaTime; //Contador para cocinar piezas de comida
     }
-    
     //DORMIR
     public void Sleep() //Dejara de hacer lo que este haciendo para tumbarse y dormir
     {
@@ -88,7 +88,6 @@ public class Enemy : MonoBehaviour
         idle = true;
         StopEnemy();
         setAnim("IsAttacking", false);
-        setAnim("IsWalking", false);
         setAnim("IsPicking", false);
         //Si ha pasado el tiempo cambio de accion
         if (tiempoComienzoIdle >= tiempoIdle)
@@ -161,7 +160,9 @@ public class Enemy : MonoBehaviour
         else
         {
             //Si esta lo suficientemente cerca del fuego
-            if (nearestFire != null && Vector3.SqrMagnitude(transform.position - nearestFire.transform.position) < 4.2f)
+            if (nearestFire != null && 
+                /*Vector3.SqrMagnitude(transform.position - nearestFire.transform.position)*/
+                Vector3.Distance(transform.position, nearestFire.transform.position) < 3.2f)
             {
                 StopEnemy();
                 setAnim("IsWalking", false);
@@ -189,28 +190,19 @@ public class Enemy : MonoBehaviour
     public void Merodeo() //En el Update del estado Wandering
     {
         setAnim("IsWalking", true); //Animacion de caminar
-        //Si ha pasado el tiempo cambio de estado y reseteo el contador
+        //Si ha pasado el tiempo o el camino es inalcanzable cambio de estado y reseteo el contador
         if (tiempoComienzoIdle >= tiempoIdle ||
-            Vector2.SqrMagnitude(transform.position - newPos) < 10f ||
-            !CheckIfCanReachDestination()) { tiempoComienzoIdle = 0; isWandering = false; }
+            agent.pathStatus == NavMeshPathStatus.PathPartial ||
+            agent.pathStatus == NavMeshPathStatus.PathInvalid) 
+        {
+            tiempoComienzoIdle = 0; 
+            isWandering = false; 
+        }
         else
             agent.SetDestination(newPos);
 
         if (lastPos == transform.position) GenerateRandomPos();
         else lastPos = transform.position;
-    }
-    private bool CheckIfCanReachDestination()
-    {
-        NavMeshPath path = new NavMeshPath();
-
-        // Calcula la ruta hacia el destino
-        if (agent.enabled && agent.CalculatePath(newPos, path))
-        {
-            // Verifica si la ruta es válida
-            return path.status == NavMeshPathStatus.PathComplete;
-        }
-
-        return false;
     }
     public bool Wandering()
     {
@@ -235,19 +227,24 @@ public class Enemy : MonoBehaviour
     }
     public void OnTriggerStay(Collider other) //Deteccion constante de los objetos de alrededor
     {
-        if (IsNight()) return;
+        //No interrumpe otro estado
+        if (IsNight() || IsInteracting() || isPickingUp() || IsAttacking()) return;
         Pickable p = other.gameObject.GetComponent<Pickable>();
-        //Si esta persiguiendo a un bicho y no tiene arma no entra
-        if (p.myType == Pickable.ObjectType.ANIMAL && getWeaponLevel() == 0) return;
-        if (p.getTarget() != null && p.getTarget() != this.gameObject) return;
-        //Si el objeto se puede recoger o es el jugador
-        if ((p != null && p.myType!=Pickable.ObjectType.FIRE && !isPicking && !IsAttacking()))
+        if (p != null)
         {
-            //Pasa al estado de perseguir (Interact)
-            target = other.gameObject;
-            setAnim("IsWalking", true);
-            setInteract(true);
-            idle = false;
+            //Si esta persiguiendo a un bicho y no tiene arma no entra
+            if (p.myType == Pickable.ObjectType.ANIMAL && getWeaponLevel() == 0) return;
+            //Si ese objeto ya esta siendo perseguido por un bicho no entra
+            if (p.getTarget() != null && p.getTarget() != this.gameObject) return;
+            //Si el objeto se puede recoger o es el jugador
+            if (p.myType != Pickable.ObjectType.FIRE)
+            {
+                //Pasa al estado de perseguir (Interact)
+                target = other.gameObject;
+                setAnim("IsWalking", true);
+                setInteract(true);
+                idle = false;
+            }
         }
     }
     
@@ -282,7 +279,7 @@ public class Enemy : MonoBehaviour
         StopEnemy();
         idle = false;
         food++;
-        //Debug.Log("Comida: "+ food);
+        Debug.Log("Comida: "+ food);
     }
     public bool isPickingUp()
     {
@@ -330,6 +327,7 @@ public class Enemy : MonoBehaviour
     public void StopEnemy() //Desactiva el NavMeshAgent
     {
         agent.enabled = false;
+        setAnim("IsWalking", false);
     }
     public void setAnim(string name, bool action) //Establecer una animacion
     {

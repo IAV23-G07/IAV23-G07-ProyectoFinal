@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7654648569335501375}
   - component: {fileID: 1587037040177865964}
   - component: {fileID: 3243771324962516832}
+  - component: {fileID: 1234850693177177434}
   m_Layer: 0
   m_Name: Peach
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3430990770576305568}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.43851376, y: -0.007349009, z: 0.83813477}
+  m_LocalPosition: {x: -0.43851376, y: 0.391, z: 0.83813477}
   m_LocalScale: {x: 0.69765913, y: 0.69765913, z: 0.69765913}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -112,6 +113,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 25, y: 4, z: 25}
   m_Center: {x: 0.041552186, y: 0.19728622, z: -0.00000010430813}
+--- !u!65 &1234850693177177434
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3430990770576305568}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.76, z: 0.99}
+  m_Center: {x: 0.041552182, y: 0.1972862, z: 0.0000037103891}
 --- !u!1 &3461692504121248116
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,6 +222,7 @@ GameObject:
   - component: {fileID: 5283412590670477974}
   - component: {fileID: 1156583375642024516}
   - component: {fileID: 1212995166399094251}
+  - component: {fileID: 5415383004004627919}
   m_Layer: 0
   m_Name: Tomato
   m_TagString: Untagged
@@ -223,7 +238,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7055549092535620249}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6569791, y: 0.07023999, z: 1.1674366}
+  m_LocalPosition: {x: 0.6569791, y: 0.407, z: 1.1674366}
   m_LocalScale: {x: 0.6344265, y: 0.6344265, z: 0.6344265}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -307,6 +322,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myType: 1
   level: 0
+--- !u!65 &5415383004004627919
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7055549092535620249}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.43, y: 2, z: 2.71}
+  m_Center: {x: 0.003187567, y: 0.2122438, z: 0.0006984994}
 --- !u!1 &8891299420362557659
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,7 +377,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8891299420362557659}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 0.33, y: 2.015, z: 0.26}

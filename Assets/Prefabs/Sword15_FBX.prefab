@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 577623120289833511}
   - component: {fileID: 2289434495935094610}
   - component: {fileID: 2289434495935094611}
-  - component: {fileID: 7200893040051633610}
+  - component: {fileID: 2166949178764418141}
   m_Layer: 0
   m_Name: Sword15_FBX
   m_TagString: Untagged
@@ -113,19 +113,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myType: 2
   level: 2
---- !u!114 &7200893040051633610
-MonoBehaviour:
+--- !u!65 &2166949178764418141
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1370463568805364722}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d07ce676d7afda4dabb3b0f7dd5e654, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OverrideArea: 0
-  m_Area: 0
-  m_IgnoreFromBuild: 1
-  m_AffectedAgents: ffffffff
+  serializedVersion: 2
+  m_Size: {x: 0.93, y: 2.51, z: 0.76}
+  m_Center: {x: 0.00000023841858, y: 0.85562944, z: -0.000000007450581}

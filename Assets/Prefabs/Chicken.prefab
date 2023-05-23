@@ -342,11 +342,11 @@ GameObject:
   m_Component:
   - component: {fileID: 508408255334416819}
   - component: {fileID: 456427769431737567}
-  - component: {fileID: 474736681547911651}
   - component: {fileID: 569717441354982297}
   - component: {fileID: 474736681547911648}
   - component: {fileID: 474736681547911649}
   - component: {fileID: 474736681547911654}
+  - component: {fileID: 1609195328876716592}
   m_Layer: 0
   m_Name: Chicken
   m_TagString: Untagged
@@ -393,21 +393,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &474736681547911651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 506520633033789171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40079260bda69f14c80332a04d1632a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 3
-  jumpForce: 300
-  timeBeforeNextJump: 1.2
 --- !u!65 &569717441354982297
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -469,3 +454,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98bd5b79baf0fd41858571137db7dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &1609195328876716592
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506520633033789171}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.22, y: 2.71, z: 2.21}
+  m_Center: {x: 0, y: 0.97, z: 0}
