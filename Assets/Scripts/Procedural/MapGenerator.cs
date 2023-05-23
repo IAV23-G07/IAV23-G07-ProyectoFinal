@@ -125,6 +125,7 @@ public class MapGenerator : MonoBehaviour{
         if (mapSize < 1) mapSize = 1;
         if (lacunarity < 1) lacunarity = 1;
         if (octaves < 0) octaves = 0;
+        if (octaves > 6) octaves = 5;
     }
 
     /// <summary>
@@ -167,6 +168,12 @@ public class MapGenerator : MonoBehaviour{
             foreach (var chunk in map3D)
                 chunk.Value.delete();
             map3D.Clear();
+            if (gameObjectMap3D.transform.childCount > 0){
+                foreach (Transform childTransform in gameObjectMap3D.transform)
+                {
+                    GameObject.Destroy(childTransform.gameObject);
+                }
+            }
         }
         else if(map3D.Count>0){
            
@@ -180,8 +187,14 @@ public class MapGenerator : MonoBehaviour{
             mapDeprecated.transform.SetParent(trashMaps.transform);
             foreach (var chunk in map3D)
                 chunk.Value.setParent(mapDeprecated.transform);
-            map3D.Clear(); 
-            
+            map3D.Clear();
+            if (gameObjectMap3D.transform.childCount > 0)
+            {
+                foreach (Transform childTransform in gameObjectMap3D.transform)
+                {
+                    GameObject.Destroy(childTransform.gameObject);
+                }
+            }
         }
 
         MapDisplay display = GetComponent<MapDisplay>();        
