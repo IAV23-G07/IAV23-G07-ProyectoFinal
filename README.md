@@ -102,7 +102,13 @@ La Herramienta constara de varios Generadores:
  
   - GenerateMap: Genera el mapa con los parametros establecidos
   - GenerateMapByChunks: Es llamado por el metodo anterior y es elencargado de crear los chunks o modificarlos segun sea necesario
-  
+ Puntos:
+  - A: El mapa generado se puede representar en 2D {A color, el ruido de perlin y el falloff}
+  - B: El mapa 3D generado, esta completamente optimizado de manera que la mmala creada es como un quad y solo se renderiza por la superficie, ademas se que solo se crean los vertices unicos y necesarios para la                representacion del mapa. Cuenta con un sistema de chunks que permite identificar entranbdo al gameobject del chunk todo lo que hay en su superficie.Crear un suavizado de bordes para que el terreno generado tenga          forma de isla.
+  - C: El mapa generado se puede representar en 3D{Con objectos, Sin Objectos}
+  - D : El mapa es completamente parametrizable,el ususario es capaz de determinar: el tamaño del mapa, el numero de octavas , el noisecale, la amplitud de cada octava("persistance"), la freciencia de cada                       octava("lacunarity"), mundos completamente unicos con un entero que el usiario determina("seed"), el offset del ruido y los objectos que quieres generar en el mapa.
+  - E: El sistema cuenta con 3 booleandos, uno para regenrar automaticamente el mapa cuando se cambien parametros desde el editor("AutoUpdate"), otro para autoregenerar el mapa cuando entras en ejecucion y por ultimo
+       un boleano para ver si kieres aplicar el suavizado de bordes("fallOff").
 ### IA de los personajes
 Los personajes contarán de dos máquinas de estados: comportamientos y animaciones. La máquina de estados de comportamientos tendrá la siguiente forma:
 ```mermaid
