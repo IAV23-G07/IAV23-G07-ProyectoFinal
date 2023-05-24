@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Pickable : MonoBehaviour
@@ -10,13 +11,11 @@ public class Pickable : MonoBehaviour
     public Mesh myMesh;
     public Material myMaterial;
     public GameObject enemy; //Enemigo asociado a ese objeto
-    bool collide; //Variable de control
     //float time, distance;
    
     void Awake()
     {
         enemy=null;
-        collide = false;
         if (myType == ObjectType.WEAPON)
         {
             myMesh = GetComponent<MeshFilter>().mesh;       //Me guardo la malla para sustituir la espada
@@ -36,17 +35,16 @@ public class Pickable : MonoBehaviour
             if (e.IsNight() || e.IsInteracting() || e.isPickingUp() || e.IsAttacking()) return;
             //Si esta persiguiendo a un bicho y no tiene arma no entra
             if (myType == ObjectType.ANIMAL && e.getWeaponLevel() == 0) return;
-            ////Si ese objeto ya esta siendo perseguido por un bicho no entra
-            //if (getTarget() != null && getTarget() != enemy) return;
             //Si el objeto se puede recoger o es el jugador
             if (myType != ObjectType.FIRE)
             {
                 enemy = e.gameObject;
                 //Pasa al estado de perseguir (Interact)
-                e.setTarget(this.gameObject);
+                if(myType==ObjectType.WEAPON && level>e.getWeaponLevel())
+                    e.addTarget(this.gameObject);
+                else if(myType == ObjectType.ANIMAL || myType == ObjectType.FOOD) e.addTarget(this.gameObject);
                 e.setAnim("IsWalking", true);
                 e.setInteract(true);
-                collide = true;
 
                 if (transform.parent != null)
                     Debug.Log(transform.parent.name + " " + this.gameObject.name + " tiene asociado: " + enemy.name);
@@ -57,9 +55,10 @@ public class Pickable : MonoBehaviour
     }
     public void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<Enemy>() != null && enemy == other.GetComponent<Enemy>().gameObject)
-        {
+        if (other.GetComponent<Enemy>() != null && enemy == other.GetComponent<Enemy>().gameObject){
+            other.GetComponent<Enemy>().deleteTarget(this.gameObject);
             enemy = null;
+          
         }
     }
     public GameObject getTarget()
@@ -167,5 +166,4 @@ public class Pickable : MonoBehaviour
     }
   
    public ObjectType getObjectType() { return myType; }
-   
 }

@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
     Vector3 newPos; //Nueva posicion del merodeo
     Vector3 lastPos;
 
-    List<Pickable> objectosEnRango= new List<Pickable>();
+    List<GameObject> targets = new List<GameObject>();
 
     //Inicio todas las variables
     void Awake()
@@ -52,6 +52,7 @@ public class Enemy : MonoBehaviour
         isWandering = false;
         newPos = Vector3.zero;
         lastPos = Vector3.zero;
+        targets=new List<GameObject>();
     }
 
     void Update()
@@ -254,14 +255,22 @@ public class Enemy : MonoBehaviour
     //INTERACT
     public void Chase()
     {
+        if (targets.Count <= 0) return;
         idle = false;
+        target = targets[0];
+        foreach (var t in targets)
+        {
+            if (Vector3.Distance(t.transform.position, transform.position) <
+                Vector3.Distance(target.transform.position, transform.position))
+                target = t;
+        }
         if (target!=null)
         {
             agent.enabled = true;
             agent.SetDestination(target.transform.position);
             if (lastPos == transform.position) setInteract(false);
             else lastPos = transform.position;
-        }
+        }       
     }
     public void StartChasing()
     {
@@ -270,7 +279,7 @@ public class Enemy : MonoBehaviour
     }
     public bool IsInteracting()
     {
-        return interact;
+        return  targets.Count>0;
     }
     public void setInteract(bool b)
     {
@@ -344,5 +353,16 @@ public class Enemy : MonoBehaviour
     public void setTarget(GameObject go)
     {
         target = go;
+    }
+
+    public void addTarget(GameObject go)
+    {
+        if (!targets.Contains(go))
+            targets.Add(go);
+    }
+    public void deleteTarget(GameObject go)
+    {
+        if(targets.Contains(go))
+            targets.Remove(go);
     }
 }

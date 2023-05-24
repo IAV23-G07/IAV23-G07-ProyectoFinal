@@ -79,6 +79,7 @@ public class TriggerObject : MonoBehaviour
             padre.target.setWeaponLevel(padre.level); //Actualizo el nivel del arma del enemigo
         }
         if (padre.target.isPickingUp()) padre.target.setPicking(false); //Me salgo del estado de recoger
+        padre.target.deleteTarget(padre.gameObject);
         Destroy(padre.gameObject); //Destruyo este objeto
     }
 }
