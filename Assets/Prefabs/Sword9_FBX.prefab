@@ -1,5 +1,63 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2926356340129775719
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 139179959963998906}
+  - component: {fileID: 4450796762688288367}
+  - component: {fileID: 6759537345830223207}
+  m_Layer: 0
+  m_Name: Espada9
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &139179959963998906
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2926356340129775719}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2466811680286760255}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4450796762688288367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2926356340129775719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fee1c15c8ffeb2b449f6602caf286205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &6759537345830223207
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2926356340129775719}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7272224, y: 2.3804004, z: 1.6052632}
+  m_Center: {x: -0.0026378632, y: 0.49564707, z: -0.009421825}
 --- !u!1 &2985939930027820933
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,7 +71,6 @@ GameObject:
   - component: {fileID: 3634630281578227280}
   - component: {fileID: 631551788646204626}
   - component: {fileID: 2115707333390774962}
-  - component: {fileID: 1629300020432736685}
   m_Layer: 0
   m_Name: Sword9_FBX
   m_TagString: Untagged
@@ -32,7 +89,8 @@ Transform:
   m_LocalPosition: {x: 28.11685, y: 1.31, z: 2.9907715}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 139179959963998906}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
@@ -100,6 +158,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myType: 2
   level: 4
+  target: {fileID: 0}
+  myMesh: {fileID: 0}
+  myMaterial: {fileID: 0}
+  enemy: {fileID: 0}
 --- !u!65 &2115707333390774962
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -112,17 +174,4 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 25, y: 4, z: 25}
-  m_Center: {x: -0.00000011920929, y: 0.52632755, z: -0.000000027939677}
---- !u!65 &1629300020432736685
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2985939930027820933}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.88, y: 1.8952264, z: 0.71}
   m_Center: {x: -0.00000011920929, y: 0.52632755, z: -0.000000027939677}

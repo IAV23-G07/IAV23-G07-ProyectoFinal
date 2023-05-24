@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3181803779784455043}
   - component: {fileID: 4317153310109930673}
   - component: {fileID: 4317153310109930672}
-  - component: {fileID: 275164344457026393}
   m_Layer: 0
   m_Name: Sword8_FBX
   m_TagString: Untagged
@@ -32,7 +31,8 @@ Transform:
   m_LocalPosition: {x: 0.20344585, y: 1.73, z: -12.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1113953845921189026}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
@@ -113,16 +113,65 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myType: 2
   level: 5
---- !u!65 &275164344457026393
+  target: {fileID: 0}
+  myMesh: {fileID: 0}
+  myMaterial: {fileID: 0}
+  enemy: {fileID: 0}
+--- !u!1 &7675015603456684860
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1113953845921189026}
+  - component: {fileID: 8514147828954319975}
+  - component: {fileID: 1871968192552075986}
+  m_Layer: 0
+  m_Name: Espada8
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1113953845921189026
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7675015603456684860}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4351362839396731116}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8514147828954319975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7675015603456684860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fee1c15c8ffeb2b449f6602caf286205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &1871968192552075986
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3974697005818810966}
+  m_GameObject: {fileID: 7675015603456684860}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.14, y: 2.4286368, z: 1.04}
-  m_Center: {x: -0.000000029802322, y: 0.90860474, z: 0}
+  m_Size: {x: 1.908514, y: 3.0742364, z: 1.8386278}
+  m_Center: {x: 0.014975637, y: 0.9272063, z: -0.00000047683716}

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2291905396547605652}
   - component: {fileID: 2596461323544506852}
   - component: {fileID: 175327728354269637}
-  - component: {fileID: 7586235664443006373}
   m_Layer: 0
   m_Name: Sword12_FBX
   m_TagString: Untagged
@@ -32,7 +31,8 @@ Transform:
   m_LocalPosition: {x: 28.859283, y: 1.36, z: 3.928583}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1894301987644217851}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
@@ -100,6 +100,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myType: 2
   level: 3
+  target: {fileID: 0}
+  myMesh: {fileID: 0}
+  myMaterial: {fileID: 0}
+  enemy: {fileID: 0}
 --- !u!65 &175327728354269637
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -113,16 +117,61 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 25, y: 1.4, z: 25}
   m_Center: {x: -0.00000011175871, y: 0.6251225, z: 0}
---- !u!65 &7586235664443006373
+--- !u!1 &4253556582841821868
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1894301987644217851}
+  - component: {fileID: 1802409409551713168}
+  - component: {fileID: 7755021305714713742}
+  m_Layer: 0
+  m_Name: Espada12
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1894301987644217851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4253556582841821868}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1118395791524409339}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1802409409551713168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4253556582841821868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fee1c15c8ffeb2b449f6602caf286205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &7755021305714713742
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346363345213519169}
+  m_GameObject: {fileID: 4253556582841821868}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 1.6999956, z: 0.54}
-  m_Center: {x: -0.00000011175871, y: 0.6251225, z: 0}
+  m_Size: {x: 1.6873665, y: 2.2903214, z: 1.6029541}
+  m_Center: {x: 0.006029129, y: 0.6331017, z: 0.00000011920929}

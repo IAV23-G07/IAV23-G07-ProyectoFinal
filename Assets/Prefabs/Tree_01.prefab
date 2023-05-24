@@ -1,5 +1,63 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &273679659129572359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4430005630188459079}
+  - component: {fileID: 1716537871547281159}
+  - component: {fileID: 4792129229390755904}
+  m_Layer: 0
+  m_Name: Tomate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4430005630188459079
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273679659129572359}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.18, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7554640868325370048}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1716537871547281159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273679659129572359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fee1c15c8ffeb2b449f6602caf286205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &4792129229390755904
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273679659129572359}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.6927787, y: 1.3504652, z: 1.699983}
+  m_Center: {x: 0.0040751942, y: 0.012225724, z: 0.0061510294}
 --- !u!1 &367075253931425803
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,7 +122,6 @@ GameObject:
   - component: {fileID: 8690914888231506863}
   - component: {fileID: 7761052620016016191}
   - component: {fileID: 3069816137782382866}
-  - component: {fileID: 9133442162945368228}
   m_Layer: 0
   m_Name: Tomato
   m_TagString: Untagged
@@ -81,9 +138,10 @@ Transform:
   m_GameObject: {fileID: 7177798253623046778}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.049, y: 0.36, z: 0.05658}
-  m_LocalScale: {x: 0.6344265, y: 0.6344265, z: 0.6344265}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 4430005630188459079}
   m_Father: {fileID: 367075253931531307}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -164,19 +222,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myType: 1
   level: 0
---- !u!65 &9133442162945368228
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7177798253623046778}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.21, y: 0.4244876, z: 1.1}
-  m_Center: {x: 0.003187567, y: 0.2122438, z: 0.00069659203}
+  target: {fileID: 0}
+  myMesh: {fileID: 0}
+  myMaterial: {fileID: 0}
+  enemy: {fileID: 0}
 --- !u!1 &8683697475629241139
 GameObject:
   m_ObjectHideFlags: 0

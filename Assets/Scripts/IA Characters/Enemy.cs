@@ -30,6 +30,9 @@ public class Enemy : MonoBehaviour
 
     Vector3 newPos; //Nueva posicion del merodeo
     Vector3 lastPos;
+
+    List<Pickable> objectosEnRango= new List<Pickable>();
+
     //Inicio todas las variables
     void Awake()
     {
@@ -225,28 +228,28 @@ public class Enemy : MonoBehaviour
             nearestFire = other.gameObject;
         }
     }
-    public void OnTriggerStay(Collider other) //Deteccion constante de los objetos de alrededor
-    {
-        //No interrumpe otro estado
-        if (IsNight() || IsInteracting() || isPickingUp() || IsAttacking()) return;
-        Pickable p = other.gameObject.GetComponent<Pickable>();
-        if (p != null)
-        {
-            //Si esta persiguiendo a un bicho y no tiene arma no entra
-            if (p.myType == Pickable.ObjectType.ANIMAL && getWeaponLevel() == 0) return;
-            //Si ese objeto ya esta siendo perseguido por un bicho no entra
-            if (p.getTarget() != null && p.getTarget() != this.gameObject) return;
-            //Si el objeto se puede recoger o es el jugador
-            if (p.myType != Pickable.ObjectType.FIRE)
-            {
-                //Pasa al estado de perseguir (Interact)
-                target = other.gameObject;
-                setAnim("IsWalking", true);
-                setInteract(true);
-                idle = false;
-            }
-        }
-    }
+    //public void OnTriggerStay(Collider other) //Deteccion constante de los objetos de alrededor
+    //{
+    //    //No interrumpe otro estado
+    //    if (IsNight() || IsInteracting() || isPickingUp() || IsAttacking()) return;
+    //    Pickable p = other.gameObject.GetComponent<Pickable>();
+    //    if (p != null)
+    //    {
+    //        //Si esta persiguiendo a un bicho y no tiene arma no entra
+    //        if (p.myType == Pickable.ObjectType.ANIMAL && getWeaponLevel() == 0) return;
+    //        //Si ese objeto ya esta siendo perseguido por un bicho no entra
+    //        if (p.getTarget() != null && p.getTarget() != this.gameObject) return;
+    //        //Si el objeto se puede recoger o es el jugador
+    //        if (p.myType != Pickable.ObjectType.FIRE)
+    //        {
+    //            //Pasa al estado de perseguir (Interact)
+    //            target = other.gameObject;
+    //            setAnim("IsWalking", true);
+    //            setInteract(true);
+    //            idle = false;
+    //        }
+    //    }
+    //}
     
     //INTERACT
     public void Chase()
@@ -263,6 +266,7 @@ public class Enemy : MonoBehaviour
     public void StartChasing()
     {
         lastPos = transform.position;
+        idle = false;
     }
     public bool IsInteracting()
     {
@@ -336,5 +340,9 @@ public class Enemy : MonoBehaviour
     public void setIdleAnim()
     {
         animator.SetInteger("Action", 0);
+    }
+    public void setTarget(GameObject go)
+    {
+        target = go;
     }
 }
