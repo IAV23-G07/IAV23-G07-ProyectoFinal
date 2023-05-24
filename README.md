@@ -103,7 +103,7 @@ La Herramienta constara de varios Generadores:
   - GenerateMap: Genera el mapa con los parametros establecidos
   - GenerateMapByChunks: Es llamado por el metodo anterior y es elencargado de crear los chunks o modificarlos segun sea necesario
   
- #### Puntos:
+ #### Metricas:
  
   - A: El mapa generado se puede representar en 2D {A color, el ruido de perlin y el falloff}
   - B: El mapa 3D generado, esta completamente optimizado de manera que la mmala creada es como un quad y solo se renderiza por la superficie, ademas se que solo se crean los vertices unicos y necesarios para la                representacion del mapa. Cuenta con un sistema de chunks que permite identificar entranbdo al gameobject del chunk todo lo que hay en su superficie.Crear un suavizado de bordes para que el terreno generado tenga          forma de isla.
@@ -125,7 +125,6 @@ stateDiagram
     Interact --> PickUp : Recoge un objeto (arma o comida)
     Interact --> Sleeping : Duerme
     Interact --> Attack : Ataca al llegar hacia su presa
-    Interact --> Idle : No le interesa lo que ha visto
     PickUp --> Idle : Ha terminado de recoger
     PickUp --> Sleeping : Duerme
     PickUp --> Interact : Encuentra algo
@@ -156,14 +155,20 @@ Los cambios entre animaciones estaran determinados por la combinacion de 5 varia
 
 
 Implementacion:
-- Los elememtos del entorno interactuables tienen un trigger bastante grande para que los personajes puedan detectarlos facilmente. Todos estos objetos tienen un script Pickable. Este script gestiona los eventos dependiendo del tipo de objeto que sea (tipos definidos por el enum ObjectType). En el caso de que el tipo de objeto sea un arma se guarda su material y malla. Compruba si el enemigo esta lo suficientemente cerca, y si cumple esta condicion deja de perseguir y: si es un animal y el enemigo tiene arma pasa al estado de atacar; si es comida, pasa al estado de recoger; si es un arma de mayor nivel que la suya pasa al estado de recoger tambien. Una vez realizadas estas acciones los objetos se destruirany  si es un arma, ademas se cambia la malla y el material para hacer el intercambio.
-- Cuando el personaje se encuentra a cierta distancia (pequeña) de un objeto, se sale del estado Interacting que se encarga de la persecucion y su NavMeshAgent se desactiva para que este quieto.
+- Los elememtos del entorno interactuables tienen un trigger bastante grande para que los personajes puedan detectarlos facilmente y otro trigger más pequeño. El trigger grande se encuentra en un objeto que contiene a otro objeto con el trigger pequeño y al script de Pickable, y el pequeño contiene a otro gameobject (a menudo vacio), con un script TriggerObject. El trigger grande se encarga de guardar ese objeto en una lista del personajes de objetos con los que ha interactuado (Pikable), y el trigger pequeño (TriggerObject) dispara la accion asociada a ese objeto (recoger, atacar ...). Los tipos de objetos vienen identificados por un enum llamado ObjectType. En el caso de que el tipo de objeto sea un arma se guarda su material y malla. Comprueba si el enemigo esta lo suficientemente cerca (entra en el trigger pequeño), y si cumple esta condicion deja de perseguir y: si es un animal y el enemigo tiene arma pasa al estado de atacar; si es comida, pasa al estado de recoger; si es un arma de mayor nivel que la suya pasa al estado de recoger tambien, si no, simplemente la ignora. Una vez realizadas estas acciones los objetos se destruiran y si es un arma, ademas se cambia la malla y el material para hacer el intercambio.
+- Cuando el personaje entre en contacto con el trigger pequeño de un objeto, sale del estado Interacting que se encarga de la persecucion y su NavMeshAgent se desactiva para que este quieto.
 - Los personajes tienen el script Enemy que gestiona los cambios de estados y todos su comportamientos.
-- Los animales tiene el script AnimalWandering que simplemente hace que merodeen generando cada 8.2 segundos una nueva posicion. Si el enemigo esta cerca y los esta atacanso paran de merodear.
+- Los animales tiene el script AnimalWandering que simplemente hace que merodeen generando cada 8.2 segundos una nueva posicion. Si el enemigo esta cerca y los esta atacando paran de merodear.
 - El cambio de estados de la maquina y el de las animaciones en su mayoría vienen determinados por booleanos.
 - Cocinar: Si tiene comida y ha visitado algun fuego, ira hacia el más cercano, y cuando este a cierta distancia ejecutará la animación de cocinar. Cada 2.5 segundos cocinara 1 pieza de la comida que haya recolectado. Cuando ya no disponga de mas piezas de comida (contador implementado en el script Enemy que tiene cada personaje) pasará a otro estado.
 - A las armas se les podrá asignar un nivel, siendo este mayor que 0. Cualquier objeto que tenga nivel 0 no se considerará arma. El personaje al detectar un arma e ir a por ella, si su nivel es inferior al que tiene el arma que maneja actualmente ignorará a esta y se desactivará su trigger para que no la vuelva a tener en cuenta.
 
+### Metricas:
+- A: Crear las animaciones de los personajes en Blender.
+- B: Crear una máquina de estados con las animaciones y la gestion del cambio de estos estados mediante variables.
+- C: Crear una maquina de estados en Unity para el complejo comportamiento de los personajes.
+- D: Definir los estados y las transiciones entre ellos por codigo.
+- E: Crear prefabs para luego generarlos proceduralmente en la escena de juego.
 ## Controles
 El movimiento es el clasico de ordenador, en el que el jugador se mueve con las teclas AWSD y rota la camara con el raton.
 
@@ -194,6 +199,11 @@ Las tareas se han realizado y el esfuerzo ha sido repartido entre los autores.
 | ✔ | Prefabs | 21-05-2023 |Sara|
 | ✔ | Actualización del README | 22-05-2023 |Sara|
 | ✔ | Refactorizacion | 22-05-2023 |Sara|
+| ✔ | Refactorizacion | 23-05-2023 |Ambos|
+| ✔ | Video | 23-05-2023 |Sara|
+| ✔ | Actualización del README | 23-05-2023 |Javier|
+| ✔ | Video | 24-05-2023 |Javier|
+| ✔ | Refactorizacion | 24-05-2023 |Sara|
 
 ## Referencias
 Los recursos de terceros utilizados son de uso público:
@@ -202,5 +212,5 @@ Los recursos de terceros utilizados son de uso público:
 - Armas: https://assetstore.unity.com/packages/3d/props/weapons/free-low-poly-swords-rpg-weapons-198166
 - Fuego: https://assetstore.unity.com/packages/vfx/particles/fire-explosions/low-poly-fire-244190
 
-- *AI for Games*, Ian Millington
+- Youtube
 - API Unity
