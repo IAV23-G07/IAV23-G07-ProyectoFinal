@@ -102,7 +102,9 @@ La Herramienta constara de varios Generadores:
  
   - GenerateMap: Genera el mapa con los parametros establecidos
   - GenerateMapByChunks: Es llamado por el metodo anterior y es elencargado de crear los chunks o modificarlos segun sea necesario
- Puntos:
+  
+ #### Puntos:
+ 
   - A: El mapa generado se puede representar en 2D {A color, el ruido de perlin y el falloff}
   - B: El mapa 3D generado, esta completamente optimizado de manera que la mmala creada es como un quad y solo se renderiza por la superficie, ademas se que solo se crean los vertices unicos y necesarios para la                representacion del mapa. Cuenta con un sistema de chunks que permite identificar entranbdo al gameobject del chunk todo lo que hay en su superficie.Crear un suavizado de bordes para que el terreno generado tenga          forma de isla.
   - C: El mapa generado se puede representar en 3D{Con objectos, Sin Objectos}
