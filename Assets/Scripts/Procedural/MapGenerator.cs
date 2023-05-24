@@ -188,6 +188,7 @@ public class MapGenerator : MonoBehaviour{
             foreach (var chunk in map3D)
                 chunk.Value.setParent(mapDeprecated.transform);
             map3D.Clear();
+            //Por si queda algo en el hijo
             if (gameObjectMap3D.transform.childCount > 0)
             {
                 foreach (Transform childTransform in gameObjectMap3D.transform)
