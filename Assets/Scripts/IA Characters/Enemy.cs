@@ -151,8 +151,6 @@ public class Enemy : MonoBehaviour
        
         tiempoIdle = 10; //Tiempo que estara merodeando
         tiempoComienzoIdle = 0; //Timer
-        //setAnim("IsWalking", true); //Animacion de caminar
-        //Debug.Log(newPos);
         isWandering = true; //Cambio de estado
         lastPos=transform.position;
     }
@@ -229,42 +227,19 @@ public class Enemy : MonoBehaviour
             nearestFire = other.gameObject;
         }
     }
-    //public void OnTriggerStay(Collider other) //Deteccion constante de los objetos de alrededor
-    //{
-    //    //No interrumpe otro estado
-    //    if (IsNight() || IsInteracting() || isPickingUp() || IsAttacking()) return;
-    //    Pickable p = other.gameObject.GetComponent<Pickable>();
-    //    if (p != null)
-    //    {
-    //        //Si esta persiguiendo a un bicho y no tiene arma no entra
-    //        if (p.myType == Pickable.ObjectType.ANIMAL && getWeaponLevel() == 0) return;
-    //        //Si ese objeto ya esta siendo perseguido por un bicho no entra
-    //        if (p.getTarget() != null && p.getTarget() != this.gameObject) return;
-    //        //Si el objeto se puede recoger o es el jugador
-    //        if (p.myType != Pickable.ObjectType.FIRE)
-    //        {
-    //            //Pasa al estado de perseguir (Interact)
-    //            target = other.gameObject;
-    //            setAnim("IsWalking", true);
-    //            setInteract(true);
-    //            idle = false;
-    //        }
-    //    }
-    //}
-    
     //INTERACT
     public void Chase()
     {
-        if (targets.Count <= 0) return;
+        if (targets.Count <= 0) return; //Si la lista de objetos esta vacia me salgo
         idle = false;
         target = targets[0];
-        foreach (var t in targets)
+        foreach (var t in targets) //Busco el objeto de la lista mas cercanos
         {
             if (Vector3.Distance(t.transform.position, transform.position) <
                 Vector3.Distance(target.transform.position, transform.position))
                 target = t;
         }
-        if (target!=null)
+        if (target!=null) //Persigo el objeto
         {
             agent.enabled = true;
             agent.SetDestination(target.transform.position);
@@ -279,7 +254,7 @@ public class Enemy : MonoBehaviour
     }
     public bool IsInteracting()
     {
-        return  targets.Count>0;
+        return  targets.Count>0; //Si hay elementos con los que ha interactuado voy a por ellos
     }
     public void setInteract(bool b)
     {
@@ -350,17 +325,12 @@ public class Enemy : MonoBehaviour
     {
         animator.SetInteger("Action", 0);
     }
-    public void setTarget(GameObject go)
-    {
-        target = go;
-    }
-
-    public void addTarget(GameObject go)
+    public void addTarget(GameObject go) //Añadir un elemento a la lista
     {
         if (!targets.Contains(go))
             targets.Add(go);
     }
-    public void deleteTarget(GameObject go)
+    public void deleteTarget(GameObject go) //Quitar un elemento de la lista
     {
         if(targets.Contains(go))
             targets.Remove(go);
