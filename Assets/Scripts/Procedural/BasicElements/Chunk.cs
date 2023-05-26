@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
 /// <summary>
 /// Capa de terreno que se puede generar
 /// </summary>
