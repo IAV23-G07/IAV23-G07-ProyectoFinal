@@ -163,7 +163,7 @@ Implementacion:
 - Cocinar: Si tiene comida y ha visitado algun fuego, ira hacia el más cercano, y cuando este a cierta distancia ejecutará la animación de cocinar. Cada 2.5 segundos cocinara 1 pieza de la comida que haya recolectado. Cuando ya no disponga de mas piezas de comida (contador implementado en el script Enemy que tiene cada personaje) pasará a otro estado.
 - A las armas se les podrá asignar un nivel, siendo este mayor que 0. Cualquier objeto que tenga nivel 0 no se considerará arma. El personaje al detectar un arma e ir a por ella, si su nivel es inferior al que tiene el arma que maneja actualmente ignorará a esta y se desactivará su trigger para que no la vuelva a tener en cuenta.
 
-La **BUILD** se encuentra en en drive. En la carpeta del proyecto hay un txt llamado Ejecutables_LINKS con el link a drive con un zip con los 2 ejecutables. Es importante comentar que en, sobretodo, la version conjunta, unity no podia bakear todas las esquinas del suelo o algunas zonas no se bakean muy bien por lo que a veces algunos de los personajes se quedan pillados ya que la posicion a la que debe ir es inalcanzable (aunque el navMeshAgent piensa que si es alcanzable). En cuanto se van a dormir esto se arregla porq cambian forzosamente de estado.
+La **BUILD** se encuentra en en drive. En la carpeta del proyecto hay un txt llamado Ejecutables_LINKS con el link a drive con un zip con los 2 ejecutables. Es importante comentar que en, sobretodo, la version conjunta, unity no podia bakear todas las esquinas del suelo o algunas zonas no se bakean muy bien por lo que a veces algunos de los personajes se quedan pillados ya que la posicion a la que debe ir es inalcanzable (aunque el navMeshAgent piensa que si es alcanzable). En cuanto se van a dormir esto se arregla porq cambian forzosamente de estado. Hay una carèta también que se llama Demo sara con el video demo de los comportamientos, y hay un txt llamado VIDEO_JAVIER_COMAS_LINK que tiene un link a drivecon el video del mapa procedural.
 
 ### Metricas:
 - A: Crear las animaciones de los personajes en Blender.
@@ -206,6 +206,7 @@ Las tareas se han realizado y el esfuerzo ha sido repartido entre los autores.
 | ✔ | Actualización del README | 23-05-2023 |Javier|
 | ✔ | Video | 24-05-2023 |Javier|
 | ✔ | Refactorizacion | 24-05-2023 |Sara|
+| ✔ | Actualización del README | 26-05-2023 |Sara|
 
 ## Referencias
 Los recursos de terceros utilizados son de uso público:
