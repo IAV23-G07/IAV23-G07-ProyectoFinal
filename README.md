@@ -38,8 +38,69 @@ tendremos varios modos de creacion:
 En el inspector de unity, existe un boton para generar el mapa.
 
 #### Punto de partida
-Para el punto de partida es una escena de unity vacia junto a el capitulo del Libro de Milinton 8.3 Landscape Generation en el cual se decriben tecnicas que implican la creacion de paisajes y todo lo que     conlleva(noise, octaves, escalas, procesos geologicos,...).Un vez leido todo, sobre todo los apartados 8.3.1 Modifiers and Height-Map 8.3.2 Noise y 8.3.3 PerlinNoise, en estos se explica la generacion de mundos mediante la aplicacion de modificadores y como la mayoria de juegos generan paisajes utilizando mapas de alturas que contienen datos de elevacion.Esos datops de elevacion es lo que se considera ruido el cual se configura y ajusta cada ubicacion con cambios de elevacion aleatorios, lo que produce a un mapa de alturas con variaciones de elevacion. Ademas de como funciona El Ruido de Perlin. Tambien se tuvo como referencia varios videos de referencia para entender como funcionaban tanto el ruido de perlin asi como las octavas para que el resultado fuera mucha mas realista 
+Para el punto de partida es una escena de unity vacia junto a el capitulo del Libro de Milinton 8.3 Landscape Generation en el cual se decriben tecnicas que implican la creacion de paisajes y todo lo que     conlleva(noise, octaves, escalas, procesos geologicos,...).Un vez leido todo, sobre todo los apartados 8.3.1 Modifiers and Height-Map 8.3.2 Noise y 8.3.3 PerlinNoise, en estos se explica la generacion de mundos mediante la aplicacion de modificadores y como la mayoria de juegos generan paisajes utilizando mapas de alturas que contienen datos de elevacion.Esos datops de elevacion es lo que se considera ruido el cual se configura y ajusta cada ubicacion con cambios de elevacion aleatorios, lo que produce a un mapa de alturas con variaciones de elevacion. Ademas de como funciona El Ruido de Perlin. Tambien se tuvo como referencia varios videos de referencia para entender como funcionaban tanto el ruido de perlin asi como las octavas para que el resultado fuera mucho mas realista.Destaca tambien el Pseudocodigo de milinton:
+```
+class PerlinOctave:
+ gradient: float[][][2]
+ size: int
 
+ function PerlinOctave(size: int):
+ this.size = size
+
+ #Create a grid of random gradient vectors.
+ gradient = float[size + 1][size + 1][2]
+ for ix in 0..(size + 1):
+  for iy in 0..(size + 1):
+    gradient[ix][iy][0] = randomRange(-1, 1)
+    gradient[ix][iy][1] = randomRange(-1, 1)
+
+ function scaledHeight(
+  ix: int, iy: int,
+  x: float, y: float) -> float:
+  #Calculate the distance across the cell.
+  dx: float = x - ix;
+  dy: float = y - iy;
+
+  #Dot product of the vector across cell and the gradient.
+  return dx * gradient[ix][iy][0] +
+    dy * gradient[ix][iy][1]
+
+ function get(x: float, y: float) -> float:
+  #Calculate which cell we are in, and how far across.
+  ix = int(x / size)
+  iy = int(y / size);
+  px = x - ix;
+  py = y - iy;
+
+ #Interpolate the corner heights.
+  tl = scaledHeight(ix, iy, x, y);
+  tr = scaledHeight(ix + 1, iy, x, y);
+  t = lerp(tl, tr, px);
+  bl = scaledHeight(ix, iy + 1, x, y);
+  br = scaledHeight(ix + 1, iy + 1, x, y);
+  b = lerp(bl, br, sx);
+  return lerp(t, b, sy)
+ 
+class PerlinNoise:
+ octaves: PerlinOctave[]
+ weights: float[]
+ function PerlinNoise(weights: float[]):
+  this.weights = weights
+
+#Create random octaves doubling in size.
+ size = 1
+ for _ in weights:
+  octaves.push(PerlinOctave(size))
+  size *= 2
+
+ function get(x: float, y: float) -> float:
+  result = 0
+ for i in 0..octaves.length():
+  weight = weights[i]
+  height = octaves[i].get(x, y)
+  result += weight * height
+ return result
+ ```
 ### IA de comportamientos de personajes
 El punto de partida es una escena de unity vacia en la que se he ido añadiendo los assets mencionados abajo, en el apartado de referencias, las animaciones propias hechas en blender y la maquina de estados proporcionada por la herramienta de Visual Scripting de Unity. No se ha partido de ninguna practica anterior o de ninguna escena prehecha, se ha hecho desde cero.
 Este proyecto consiste en la recreacion del comportamiento lo más realista y organico posible de unos seres que habitan en un bosque. Teniendo en cuenta todo lo que encuentran a su alrededor realizaran unas acciones u otras. En otras palabras, serán capaces de sobrevivir alimentandose de la comida que encuentran o cazando a animales que vean y dormiran por las noches entre otras actividades. Si encuentran algun animal cerca y tiene algun arma lo perseguirán y cuando este cerca lo atacará (cazar), obteniendo al matarlo un numero aleatorio de trozos de comida. Si ven alimentos (frutas y verduras) en las inmediaciones, se acercarán a ellas y las cogerán, acumulando comida. Si tienen comida y han encontrado un fuego, iran al mas cercano para cocinar, gastando toda la comida acumulada que tienen, a no ser que se queden dormidos en el proceso. Si ven algun arma clavada en el suelo, y esa arma es más poderosa que la que llevan en ese momento, o si no tienen arma, la recoerá y cambiará por lo que lleva en ese momento, en cambio si el arma que ven es inferior, la ignorarán. En este proyecto para dar más realismo habrá un ciclo de día y noche, por lo que cuando sea de noche los personajes dejarán lo que esten haciendo y se dormirán. Todo esto se podra ver desde un punto de vista de primera persona.
@@ -227,3 +288,7 @@ Los recursos de terceros utilizados son de uso público:
 - Youtube (exportar animaciones de blender a unity, Animator y maquina de estados de las animaciones)
 - API Unity
 - Libro de Milinton
+- Videos de referencia Para la Herramienta de Creacion de Mundos:
+   - https://www.youtube.com/watch?v=wbpMiKiSKm8&list=RDCMUCmtyQOKKmrMVaKuRXz02jbQ&start_radio=1&rv=wbpMiKiSKm8&t (Videos 1 2 3 4 )
+   - https://www.youtube.com/watch?v=eJEpeUH1EMg
+   - https://www.youtube.com/watch?v=XpG3YqUkCTY
