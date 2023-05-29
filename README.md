@@ -38,7 +38,9 @@ tendremos varios modos de creacion:
 En el inspector de unity, existe un boton para generar el mapa.
 
 ### IA de comportamientos de personajes
+El punto de partida es una escena de unity vacia en la que se he ido añadiendo los assets mencionados abajo, en el apartado de referencias, las animaciones propias hechas en blender y la maquina de estados proporcionada por la herramienta de Visual Scripting de Unity. No se ha partido de ninguna practica anterior o de ninguna escena prehecha, se ha hecho desde cero.
 Este proyecto consiste en la recreacion del comportamiento lo más realista y organico posible de unos seres que habitan en un bosque. Teniendo en cuenta todo lo que encuentran a su alrededor realizaran unas acciones u otras. En otras palabras, serán capaces de sobrevivir alimentandose de la comida que encuentran o cazando a animales que vean y dormiran por las noches entre otras actividades. Si encuentran algun animal cerca y tiene algun arma lo perseguirán y cuando este cerca lo atacará (cazar), obteniendo al matarlo un numero aleatorio de trozos de comida. Si ven alimentos (frutas y verduras) en las inmediaciones, se acercarán a ellas y las cogerán, acumulando comida. Si tienen comida y han encontrado un fuego, iran al mas cercano para cocinar, gastando toda la comida acumulada que tienen, a no ser que se queden dormidos en el proceso. Si ven algun arma clavada en el suelo, y esa arma es más poderosa que la que llevan en ese momento, o si no tienen arma, la recoerá y cambiará por lo que lleva en ese momento, en cambio si el arma que ven es inferior, la ignorarán. En este proyecto para dar más realismo habrá un ciclo de día y noche, por lo que cuando sea de noche los personajes dejarán lo que esten haciendo y se dormirán. Todo esto se podra ver desde un punto de vista de primera persona.
+Al tratarse de una simulacion y no un juego como tal, no acaba, se trata de observar. Para poder "terminar" se deberá cerrar la ventana.
  
 ### Combinacion de ambas propuestas
 Sera un nivel en el que los personajes se instanciaran proceduralmente por el mapa junto a los dintintos elementos con los que puede interactuar (tambien generados proceduralmete) y realizara sus distintos comportamientos dependiendo de lo que tengan a su alrededor. Pudiendo ser observados gracias a un controlador en 1ª persona.
@@ -155,6 +157,9 @@ Los cambios entre animaciones estaran determinados por la combinacion de 5 varia
 
 
 Implementacion:
+
+Los scripts se encuentran en en la carpeta "IA CHARACTERS". Estos scripts son: AnimalWandering, Enemy, Pickable, TriggerObject. Se explican a continuacion.
+
 - Los elememtos del entorno interactuables tienen un trigger bastante grande para que los personajes puedan detectarlos facilmente y otro trigger más pequeño. El trigger grande se encuentra en un objeto que contiene a otro objeto con el trigger pequeño y al script de Pickable, y el pequeño contiene a otro gameobject (a menudo vacio), con un script TriggerObject. El trigger grande se encarga de guardar ese objeto en una lista del personajes de objetos con los que ha interactuado (Pikable), y el trigger pequeño (TriggerObject) dispara la accion asociada a ese objeto (recoger, atacar ...). Los tipos de objetos vienen identificados por un enum llamado ObjectType. En el caso de que el tipo de objeto sea un arma se guarda su material y malla. Comprueba si el enemigo esta lo suficientemente cerca (entra en el trigger pequeño), y si cumple esta condicion deja de perseguir y: si es un animal y el enemigo tiene arma pasa al estado de atacar; si es comida, pasa al estado de recoger; si es un arma de mayor nivel que la suya pasa al estado de recoger tambien, si no, simplemente la ignora. Una vez realizadas estas acciones los objetos se destruiran y si es un arma, ademas se cambia la malla y el material para hacer el intercambio.
 - Cuando el personaje entre en contacto con el trigger pequeño de un objeto, sale del estado Interacting que se encarga de la persecucion y su NavMeshAgent se desactiva para que este quieto.
 - Los personajes tienen el script Enemy que gestiona los cambios de estados y todos su comportamientos.
@@ -207,6 +212,7 @@ Las tareas se han realizado y el esfuerzo ha sido repartido entre los autores.
 | ✔ | Video | 24-05-2023 |Javier|
 | ✔ | Refactorizacion | 24-05-2023 |Sara|
 | ✔ | Actualización del README | 26-05-2023 |Sara|
+| ✔ | Correciones | 29-05-2023 |Sara|
 
 ## Referencias
 Los recursos de terceros utilizados son de uso público:
@@ -215,5 +221,5 @@ Los recursos de terceros utilizados son de uso público:
 - Armas: https://assetstore.unity.com/packages/3d/props/weapons/free-low-poly-swords-rpg-weapons-198166
 - Fuego: https://assetstore.unity.com/packages/vfx/particles/fire-explosions/low-poly-fire-244190
 
-- Youtube
+- Youtube (exportar animaciones de blender a unity, Animator y maquina de estados de las animaciones)
 - API Unity
