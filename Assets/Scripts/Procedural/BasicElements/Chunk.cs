@@ -87,8 +87,8 @@ public class Chunk{
         floor.AddComponent<MeshCollider>();
         edges.AddComponent<MeshCollider>();
 
-        GameObjectUtility.SetStaticEditorFlags(floor, StaticEditorFlags.BatchingStatic);
-        GameObjectUtility.SetStaticEditorFlags(edges, StaticEditorFlags.BatchingStatic);
+        //GameObjectUtility.SetStaticEditorFlags(floor, StaticEditorFlags.BatchingStatic);
+        //GameObjectUtility.SetStaticEditorFlags(edges, StaticEditorFlags.BatchingStatic);
     }
 
     /// <summary>

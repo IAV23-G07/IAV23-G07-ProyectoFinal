@@ -9,8 +9,8 @@ public class Enemy : MonoBehaviour
     NavMeshAgent agent;
     GameObject target;             //Objeto que se fija como destino
     GameObject nearestFire;        //Fuego mas cercano
-    double tiempoIdle;             //Cada x segundo se se cambia de idle
-    double tiempoComienzoIdle;     //Timer de idle
+    double idleTime;             //Cada x segundo se se cambia de idle
+    double iniIdleTime;     //Timer de idle
     double cookingTime;            //Cada x segundo se cocina una pieza de comida
     double iniCookingTime;         //Timer de cocinar
 
@@ -41,8 +41,8 @@ public class Enemy : MonoBehaviour
         setAttacking(false);
         setPicking(false);
         setCooking(false);
-        tiempoComienzoIdle = 0;
-        tiempoIdle = 3;
+        iniIdleTime = 0;
+        idleTime = 3;
         weaponLevel = 0;
         cookingTime = 2.5;
         iniCookingTime = 0;
@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (idle) tiempoComienzoIdle += Time.deltaTime; //Contador para el cambio de idle
+        if (idle) iniIdleTime += Time.deltaTime; //Contador para el cambio de idle
         if (isCooking) iniCookingTime += Time.deltaTime; //Contador para cocinar piezas de comida
     }
     //DORMIR
@@ -91,16 +91,16 @@ public class Enemy : MonoBehaviour
         setAnim("IsAttacking", false);
         setAnim("IsPicking", false);
         //Si ha pasado el tiempo cambio de accion
-        if (tiempoComienzoIdle >= tiempoIdle)
+        if (iniIdleTime >= idleTime)
         {
             SelecIdleAction();
-            tiempoComienzoIdle = 0;
+            iniIdleTime = 0;
         }
     }
     private void SelecIdleAction() //Seleccionador de accion de idle que se llama cada 3 segundos
     {
         action = Random.Range(0, 5); //Elijo de forma aleatoria una accion
-        tiempoIdle = 3;
+        idleTime = 3;
         //setAnim("IsWalking", false);
         switch (action)
         {
@@ -122,7 +122,7 @@ public class Enemy : MonoBehaviour
                 break;
             //Merodear
             case 4:
-                StartMerodeo();
+                StartWandering();
                 break;
         }
     }
@@ -139,15 +139,15 @@ public class Enemy : MonoBehaviour
         }
         else SelecIdleAction();
     } //Accion de cocinar sin pasar de estado
-    public void StartMerodeo() //Accion de merodear sin pasar de estado
+    public void StartWandering() //Accion de merodear sin pasar de estado
     {
         Debug.Log("Merodear");
         agent.enabled = true;
         //Genero una nueva posicion aleatoria
         GenerateRandomPos();
        
-        tiempoIdle = 10; //Tiempo que estara merodeando
-        tiempoComienzoIdle = 0; //Timer
+        idleTime = 10; //Tiempo que estara merodeando
+        iniIdleTime = 0; //Timer
         isWandering = true; //Cambio de estado
         lastPos=transform.position;
     }
@@ -186,15 +186,15 @@ public class Enemy : MonoBehaviour
     }
 
     //WANDERING
-    public void Merodeo() //En el Update del estado Wandering
+    public void Wander() //En el Update del estado Wandering
     {
         setAnim("IsWalking", true); //Animacion de caminar
         //Si ha pasado el tiempo o el camino es inalcanzable cambio de estado y reseteo el contador
-        if (tiempoComienzoIdle >= tiempoIdle ||
+        if (iniIdleTime >= idleTime ||
             agent.pathStatus == NavMeshPathStatus.PathPartial ||
             agent.pathStatus == NavMeshPathStatus.PathInvalid) 
         {
-            tiempoComienzoIdle = 0; 
+            iniIdleTime = 0; 
             isWandering = false; 
         }
         else

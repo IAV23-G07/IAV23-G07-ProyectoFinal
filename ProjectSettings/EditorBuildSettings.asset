@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Javi.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Sara.unity
     guid: 6ec05d9d8c24af74cb58917ded3382c6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level.unity
     guid: 24ab672b439d15c4699d4c1c3b2a3c40
   m_configObjects: {}

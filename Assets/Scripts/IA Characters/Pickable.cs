@@ -18,7 +18,7 @@ public class Pickable : MonoBehaviour
    
     void Awake()
     {
-        enemy=null;
+        enemy = null;
         if (myType == ObjectType.WEAPON) //Si es una espada
         {
             myMesh = GetComponent<MeshFilter>().mesh;       //Me guardo la malla para sustituir la espada
@@ -49,9 +49,9 @@ public class Pickable : MonoBehaviour
                 e.setAnim("IsWalking", true);
                 e.setInteract(true);
 
-                if (transform.parent != null)
-                    Debug.Log(transform.parent.name + " " + this.gameObject.name + " tiene asociado: " + enemy.name);
-                else Debug.Log(this.gameObject.name + " tiene asociado: " + enemy.name);
+                //if (transform.parent != null)
+                //    Debug.Log(transform.parent.name + " " + this.gameObject.name + " tiene asociado: " + enemy.name);
+                //else Debug.Log(this.gameObject.name + " tiene asociado: " + enemy.name);
             }
         }
     }
