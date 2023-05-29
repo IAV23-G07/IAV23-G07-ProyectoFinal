@@ -102,10 +102,12 @@ class PerlinNoise:
  return result
  ```
 ### IA de comportamientos de personajes
-El punto de partida es una escena de unity vacia en la que se he ido añadiendo los assets mencionados abajo, en el apartado de referencias, las animaciones propias hechas en blender y la maquina de estados proporcionada por la herramienta de Visual Scripting de Unity. No se ha partido de ninguna practica anterior o de ninguna escena prehecha, se ha hecho desde cero.
 Este proyecto consiste en la recreacion del comportamiento lo más realista y organico posible de unos seres que habitan en un bosque. Teniendo en cuenta todo lo que encuentran a su alrededor realizaran unas acciones u otras. En otras palabras, serán capaces de sobrevivir alimentandose de la comida que encuentran o cazando a animales que vean y dormiran por las noches entre otras actividades. Si encuentran algun animal cerca y tiene algun arma lo perseguirán y cuando este cerca lo atacará (cazar), obteniendo al matarlo un numero aleatorio de trozos de comida. Si ven alimentos (frutas y verduras) en las inmediaciones, se acercarán a ellas y las cogerán, acumulando comida. Si tienen comida y han encontrado un fuego, iran al mas cercano para cocinar, gastando toda la comida acumulada que tienen, a no ser que se queden dormidos en el proceso. Si ven algun arma clavada en el suelo, y esa arma es más poderosa que la que llevan en ese momento, o si no tienen arma, la recoerá y cambiará por lo que lleva en ese momento, en cambio si el arma que ven es inferior, la ignorarán. En este proyecto para dar más realismo habrá un ciclo de día y noche, por lo que cuando sea de noche los personajes dejarán lo que esten haciendo y se dormirán. Todo esto se podra ver desde un punto de vista de primera persona.
 Al tratarse de una simulacion y no un juego como tal, no acaba, se trata de observar. Para poder "terminar" se deberá cerrar la ventana.
- 
+
+#### Punto De Partida
+El punto de partida es una escena de unity vacia en la que se he ido añadiendo los assets mencionados abajo, en el apartado de referencias, las animaciones propias hechas en blender y la maquina de estados proporcionada por la herramienta de Visual Scripting de Unity. No se ha partido de ninguna practica anterior o de ninguna escena prehecha, se ha hecho desde cero.
+
 ### Combinacion de ambas propuestas
 Sera un nivel en el que los personajes se instanciaran proceduralmente por el mapa junto a los dintintos elementos con los que puede interactuar (tambien generados proceduralmete) y realizara sus distintos comportamientos dependiendo de lo que tengan a su alrededor. Pudiendo ser observados gracias a un controlador en 1ª persona.
 
@@ -284,7 +286,8 @@ Los recursos de terceros utilizados son de uso público:
 - Comida: https://assetstore.unity.com/packages/3d/props/food/root-vegetables-set-93392 y https://assetstore.unity.com/packages/3d/props/food/low-poly-fruit-pickups-98135
 - Armas: https://assetstore.unity.com/packages/3d/props/weapons/free-low-poly-swords-rpg-weapons-198166
 - Fuego: https://assetstore.unity.com/packages/vfx/particles/fire-explosions/low-poly-fire-244190
-- Shader de Agua: https://www.youtube.com/watch?v=jRuCQnp78gk&t=8s
+- Shader de Agua: https://www.youtube.com/watch?v=jRuCQnp78gk&t
+- Arboles y rocas: https://assetstore.unity.com/packages/3d/environments/landscapes/low-poly-simple-nature-pack-162153
 - Youtube (exportar animaciones de blender a unity, Animator y maquina de estados de las animaciones)
 - API Unity
 - Libro de Milinton
